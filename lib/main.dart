@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pay100_pos/onboarding_screen/splash_screen.dart';
 import 'package:pay100_pos/test.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class _Pay100ShopState extends State<Pay100Shop> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Pay100(),
+      home: OnBoarding(),
     );
   }
 }
