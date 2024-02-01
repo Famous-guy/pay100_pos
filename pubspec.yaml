@@ -37,18 +37,26 @@ dependencies:
   cupertino_icons: ^1.0.2
   webview_flutter: ^4.4.4
 
-  hundredpay:
-    git:
-      url: https://github.com/shop100global/100pay-flutter-sdk.git
-      ref: master
+  hundredpay: ^0.0.3
   intl: ^0.19.0
   shared_preferences: ^2.2.2
   flutter_svg: ^2.0.9
   equatable: ^2.0.5
   carousel_indicator: ^1.0.6
+  flutter_webview_plugin: ^0.4.0
+  url_launcher: ^6.2.4
+  flutter_launcher_icons: ^0.13.1
+  animated_toggle_switch: ^0.8.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  image_path_ios: "assets/images/100pay.png"
+  image_path_android: "assets/images/100pay.png"
+  android: true 
+  ios: true
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
