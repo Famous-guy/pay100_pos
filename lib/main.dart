@@ -1,5 +1,7 @@
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pay100_pos/onboarding_screen/splash_screen.dart';
+import 'package:pay100_pos/provider/auth.dart';
 import 'package:pay100_pos/test.dart';
 import 'package:flutter_launcher_icons/abs/icon_generator.dart';
 import 'package:flutter_launcher_icons/android.dart';
@@ -24,9 +26,21 @@ import 'package:flutter_launcher_icons/web/web_icon_generator.dart';
 import 'package:flutter_launcher_icons/web/web_template.dart';
 import 'package:flutter_launcher_icons/windows/windows_icon_generator.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  // Fetch API key from local storage
+  String? apiKey = await fetchApiKeyFromLocalStorage();
   runApp(const Pay100Shop());
+}
+
+Future<String?> fetchApiKeyFromLocalStorage() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('apiKey');
 }
 
 class Pay100Shop extends StatefulWidget {
@@ -39,9 +53,12 @@ class Pay100Shop extends StatefulWidget {
 class _Pay100ShopState extends State<Pay100Shop> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: OnBoarding(),
+    return ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: OnBoarding(),
+      ),
     );
   }
 }
