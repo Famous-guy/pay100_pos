@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hundredpay/hundredpay.dart';
 import 'package:pay100_pos/main.dart';
 import 'package:pay100_pos/onboarding_screen/settings.dart';
+import 'package:pay100_pos/onboarding_screen/webview.dart';
 import 'package:pay100_pos/provider/auth.dart';
 import 'package:provider/provider.dart';
 // import 'package:pay100_pos/rough.dart';
@@ -50,22 +53,6 @@ class _Pay100State extends State<Pay100> {
     // fetchApiKeyFromFirestore();flu
   }
 
-  // Future<void> fetchApiKeyFromFirestore() async {
-  //   try {
-  //     // Fetch the API key from Firestore
-  //     DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-  //         .instance
-  //         .collection('users')
-  //         .doc('user_id')
-  //         .get();
-  //     setState(() {
-  //       apiKey = snapshot.data()?['api_key'];
-  //     });
-  //   } catch (error) {
-  //     print('Error fetching API key: $error');
-  //   }
-  // }
-
   Future<void> logSignInOrOut(String event) async {
     final prefs = await SharedPreferences.getInstance();
     final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
@@ -94,104 +81,112 @@ class _Pay100State extends State<Pay100> {
         ),
       ),
       builder: (BuildContext bc) {
-        return Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Customers Details',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              TextField(
-                controller: emailController,
-                onChanged: (value) {
-                  paymentInput = value;
-                  setState(() {
-                    _isEmailValid = _validateEmail(value);
-                  });
-                },
-                keyboardType: TextInputType.emailAddress,
-                // keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Email address',
-                  border: OutlineInputBorder(),
-                  // hintText: 'Enter your email address',
-                  errorText: _isEmailValid
-                      ? null
-                      : 'Please enter a valid email address',
-                ),
-              ),
-              SizedBox(height: 20),
-              TextField(
-                controller: number,
-                onChanged: (value) {
-                  paymentInput = value;
-                  setState(() {
-                    _isNumberValid = _validateNumber(value);
-                  });
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  errorText: _isNumberValid
-                      ? null
-                      : 'Please enter a valid email address',
-                  labelText: 'Phone number',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20),
-              TextField(
-                controller: description,
-                onChanged: (value) {
-                  paymentInput = value;
-                  setState(() {
-                    _isMetaDataValid = _validateMetaData(value);
-                  });
-                },
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
-                  errorText: _isMetaDataValid
-                      ? null
-                      : 'Please enter a valid email address',
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 50),
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                  onPressed: () {
-                    setState(() {
-                      _isEmailValid = _validateEmail(emailController.text);
-                      _isNumberValid = _validateNumber(number.text);
-                      _isMetaDataValid = _validateMetaData(description.text);
+        return GestureDetector(
+          onTap: () {
+            // Dismiss the keyboard when tapping outside the text fields
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Customers Details',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: emailController,
+                    onChanged: (value) {
+                      paymentInput = value;
+                      setState(() {
+                        _isEmailValid = _validateEmail(value);
+                      });
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: 'Email address',
+                      border: OutlineInputBorder(),
+                      errorText: _isEmailValid
+                          ? null
+                          : 'Please enter a valid email address',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: number,
+                    onChanged: (value) {
+                      paymentInput = value;
+                      setState(() {
+                        _isNumberValid = _validateNumber(value);
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      errorText: _isNumberValid
+                          ? null
+                          : 'Please enter a valid email address',
+                      labelText: 'Phone number',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: description,
+                    onChanged: (value) {
+                      paymentInput = value;
+                      setState(() {
+                        _isMetaDataValid = _validateMetaData(value);
+                      });
+                    },
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      errorText: _isMetaDataValid
+                          ? null
+                          : 'Please enter a valid email address',
+                      labelText: 'Description',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isEmailValid = _validateEmail(emailController.text);
+                          _isNumberValid = _validateNumber(number.text);
+                          _isMetaDataValid =
+                              _validateMetaData(description.text);
 
-                      if (_isEmailValid && _isMetaDataValid && _isNumberValid) {
-                        Navigator.pop(context);
-                        // Call the function to make payment with the entered amount
-                        makePayment();
-                      }
-                    });
-                    // if (_isEmailValid) {
-
-                    // }
-                  },
-                  child: Text('Proceed', style: TextStyle(color: Colors.white)),
-                ),
+                          if (_isEmailValid &&
+                              _isMetaDataValid &&
+                              _isNumberValid) {
+                            Navigator.pop(context);
+                            makePayment();
+                          }
+                        });
+                      },
+                      child: Text(
+                        'Proceed',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                ],
               ),
-              SizedBox(
-                height: 50,
-              )
-            ],
+            ),
           ),
         );
       },
@@ -243,36 +238,42 @@ class _Pay100State extends State<Pay100> {
   Widget buildButton(String buttonText) {
     EdgeInsetsGeometry padding = const EdgeInsets.all(15);
     double fontSize = 36.0;
+    Widget buttonChild;
 
     if (buttonText == 'Del') {
-      padding = const EdgeInsets.all(19); // Different padding for 'Del' button
-      fontSize = 26.0; // Smaller font size for 'Del' button
+      padding = const EdgeInsets.all(19);
+      fontSize = 36.0;
+      buttonChild = ImageIcon(
+        AssetImage(
+          'assets/images/tag-cross.png',
+        ),
+        size: 36, // Adjust the size of the icon as needed
+        color: _isDarkMode ? Colors.white : Colors.black,
+      ); // Replace text with icon for 'Del' button
+    } else {
+      buttonChild = Text(
+        buttonText,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: _isDarkMode ? Colors.white : Colors.black,
+          fontWeight: FontWeight.w500,
+        ),
+      ); // Render text for other buttons
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: _isDarkMode
               ? Colors.grey[800]
               : const Color.fromRGBO(243, 244, 246, 1),
-          //  const Color.fromRGBO(243, 244, 246, 1),
           shape: const CircleBorder(),
           padding: buttonText == 'Del' ? padding : EdgeInsets.all(12),
         ),
         onPressed: () => onButtonPressed(buttonText),
-        child: Text(
-          buttonText,
-          style: TextStyle(
-            fontSize: fontSize,
-            color: _isDarkMode ? Colors.white : Colors.black,
-            // Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        child: buttonChild,
       ),
     );
   }
@@ -334,316 +335,147 @@ class _Pay100State extends State<Pay100> {
     });
   }
 
+  bool _drawerOpen = false;
+
+  void _toggleDrawer() {
+    setState(() {
+      _drawerOpen = !_drawerOpen;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // apiKey = Provider.of<AuthProvider>(context).apiKey;
     apiKey = Provider.of<AuthProvider>(context).apiKey;
     const green = Color(0xFF45CC0D);
     String imageAssetPath = _isDarkMode
-        ? 'assets/images/100pay200.png'
-        : 'assets/images/100pay.png';
+        ? 'assets/images/100Paywhite.png'
+        : 'assets/images/100Payblack.png';
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
-        drawer:
-            //  Drawer(
-            //   child: Column(
-            //     children: [
-            //       // DrawerHeader(
-            //       //   child: Image.asset(
-            //       //     "assets/images/100pay.png",
-            //       //     width: 100,
-            //       //   ),
-            //       // ),
-            //       Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         // rgba(153, 172, 241, 0.11)
-            //         children: [
-            //           SizedBox(
-            //             height: 20,
-            //           ),
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               Image.asset(
-            //                 "assets/images/100pay.png",
-            //                 width: 100,
-            //               ),
-            //               SizedBox(
-            //                 height: 40,
-            //                 width: 120,
-            //                 child: DefaultTextStyle.merge(
-            //                   style: const TextStyle(
-            //                     color: Colors.black,
-            //                     fontSize: 18.0,
-            //                     fontWeight: FontWeight.bold,
-            //                   ),
-            //                   child: GestureDetector(
-            //                     onTap: () {
-            //                       setState(() {
-            //                         _isDarkMode = !_isDarkMode; // Toggle dark mode
-            //                       });
-            //                     },
-            //                     child: IconTheme.merge(
-            //                       data: IconThemeData(color: Colors.black),
-            //                       child: _isDarkMode
-            //                           ? Icon(Icons.brightness_5,
-            //                               color: Colors.white,
-            //                               size:
-            //                                   30.0) // Brightness icon for dark mode
-            //                           : Icon(Icons.nightlight_round,
-            //                               color: Colors
-            //                                   .grey.shade600, // Changed to black
-            //                               size: 30.0), // Moon icon for light mode
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //           Divider(),
-            //           Padding(
-            //             padding: const EdgeInsets.symmetric(horizontal: 15),
-            //             child: SizedBox(
-            //               height: 80,
-            //               child: Card(
-            //                 elevation: 0,
-            //                 color: Color.fromRGBO(153, 172, 241, 0.11),
-            //                 child: Center(
-            //                   child: ListTile(
-            //                     onTap: () {
-            //                       Navigator.push(
-            //                           context,
-            //                           MaterialPageRoute(
-            //                             builder: (context) => Account(),
-            //                           ));
-            //                     },
-            //                     // focusColor: Colors.amber,
-            //                     splashColor: Color.fromRGBO(153, 172, 241, 0.11),
-
-            //                     leading: Icon(Icons.account_circle,
-            //                         color: Colors.black), // Changed to black
-            //                     title: Text("My Account Profile",
-            //                         style: TextStyle(
-            //                             color: Colors.black)), // Changed to black
-            //                     trailing: Icon(Icons.arrow_forward_ios_outlined,
-            //                         color: Colors.black), // Changed to black
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           Padding(
-            //             padding: const EdgeInsets.symmetric(horizontal: 15),
-            //             // padding: const EdgeInsets.all(8.0),
-            //             child: SizedBox(
-            //               height: 80,
-            //               child: Card(
-            //                 elevation: 0,
-            //                 color: Color.fromRGBO(153, 172, 241, 0.11),
-            //                 child: Center(
-            //                   child: ListTile(
-            //                     onTap: () {
-            //                       Navigator.push(
-            //                           context,
-            //                           MaterialPageRoute(
-            //                             builder: (context) => MySettingsPage(),
-            //                           ));
-            //                     },
-            //                     // focusColor: Colors.amber,
-            //                     splashColor: Color.fromRGBO(153, 172, 241, 0.11),
-
-            //                     leading: Icon(Icons.settings,
-            //                         color: Colors.black), // Changed to black
-            //                     title: Text("Settings",
-            //                         style: TextStyle(
-            //                             color: Colors.black)), // Changed to black
-            //                     trailing: Icon(Icons.arrow_forward_ios_outlined,
-            //                         color: Colors.black), // Changed to black
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           Divider(
-            //             color: Colors.transparent,
-            //             height: 10,
-            //           ),
-            //         ],
-            //       ),
-            //       Expanded(
-            //         child: Column(
-            //           mainAxisAlignment: MainAxisAlignment.end,
-            //           children: [
-            //             Padding(
-            //               // padding: const EdgeInsets.only(bottom: 20),
-            //               padding: const EdgeInsets.symmetric(horizontal: 15),
-            //               child: SizedBox(
-            //                 height: 80,
-            //                 child: Card(
-            //                   elevation: 0,
-            //                   color: Color.fromRGBO(153, 172, 241, 0.11),
-            //                   child: Center(
-            //                     child: ListTile(
-            //                       onTap: () async {
-            //                         await logSignInOrOut('Sign Out');
-            //                         Navigator.push(
-            //                           context,
-            //                           MaterialPageRoute(
-            //                             builder: (context) => SignIn(),
-            //                           ),
-            //                         );
-            //                       },
-            //                       title: const Text("Logout",
-            //                           style: TextStyle(
-            //                               color: Colors.black)), // Changed to black
-            //                       leading: const Icon(Icons.logout,
-            //                           color: Colors.black), // Changed to black
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //             Divider(
-            //               color: Colors.transparent,
-            //               height: 20,
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
-            Drawer(
+        drawer: Drawer(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 65, bottom: 37.28),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        imageAssetPath,
+                        // "assets/images/100pay.png",
+                        width: 80,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                      width: 120,
+                      child: DefaultTextStyle.merge(
+                        style: TextStyle(
+                          color: _isDarkMode
+                              ? Colors.white
+                              : Colors
+                                  .black, // Change font color based on _isDarkMode
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isDarkMode = !_isDarkMode; // Toggle dark mode
+                            });
+                          },
+                          child: IconTheme.merge(
+                            data: IconThemeData(color: Colors.black),
+                            child: _isDarkMode
+                                ? Icon(Icons.brightness_5,
+                                    color: Colors.white, size: 30.0)
+                                : Icon(Icons.nightlight_round,
+                                    color: Colors.grey.shade600, size: 30.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        "assets/images/100pay.png",
-                        width: 100,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 120,
-                        child: DefaultTextStyle.merge(
-                          style: TextStyle(
-                            color: _isDarkMode
-                                ? Colors.white
-                                : Colors
-                                    .black, // Change font color based on _isDarkMode
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isDarkMode = !_isDarkMode; // Toggle dark mode
-                              });
-                            },
-                            child: IconTheme.merge(
-                              data: IconThemeData(color: Colors.black),
-                              child: _isDarkMode
-                                  ? Icon(Icons.brightness_5,
-                                      color: Colors.white, size: 30.0)
-                                  : Icon(Icons.nightlight_round,
-                                      color: Colors.grey.shade600, size: 30.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+
+                  // Divider(),
+                  SizedBox(
+                    height: 60,
                   ),
-                  Divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: SizedBox(
-                      height: 80,
-                      child: Card(
-                        elevation: 0,
-                        color: Color.fromRGBO(153, 172, 241, 0.11),
-                        child: Center(
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Account(),
-                                  ));
-                            },
-                            splashColor: Color.fromRGBO(153, 172, 241, 0.11),
-                            leading: Icon(Icons.account_circle,
-                                color: _isDarkMode
-                                    ? Colors.white
-                                    : Colors
-                                        .black), // Change font color based on _isDarkMode
-                            title: Text("My Account Profile",
-                                style: TextStyle(
-                                    color: _isDarkMode
-                                        ? Colors.white
-                                        : Colors
-                                            .black)), // Change font color based on _isDarkMode
-                            trailing: Icon(Icons.arrow_forward_ios_outlined,
-                                color: _isDarkMode
-                                    ? Colors.white
-                                    : Colors
-                                        .black), // Change font color based on _isDarkMode
-                          ),
-                        ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PayUi(url: 'https://streamlivr.com'),
+                          ));
+                    },
+                    leading: Icon(Icons.account_circle),
+                    title: Text(
+                      'My Account',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
+                    textColor: _isDarkMode ? Colors.white : Colors.black,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: SizedBox(
-                      height: 80,
-                      child: Card(
-                        elevation: 0,
-                        color: Color.fromRGBO(153, 172, 241, 0.11),
-                        child: Center(
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MySettingsPage(),
-                                  ));
-                            },
-                            splashColor: Color.fromRGBO(153, 172, 241, 0.11),
-                            leading: Icon(Icons.settings,
-                                color: _isDarkMode
-                                    ? Colors.white
-                                    : Colors
-                                        .black), // Change font color based on _isDarkMode
-                            title: Text("Settings",
-                                style: TextStyle(
-                                    color: _isDarkMode
-                                        ? Colors.white
-                                        : Colors
-                                            .black)), // Change font color based on _isDarkMode
-                            trailing: Icon(Icons.arrow_forward_ios_outlined,
-                                color: _isDarkMode
-                                    ? Colors.white
-                                    : Colors
-                                        .black), // Change font color based on _isDarkMode
-                          ),
-                        ),
+
+                  ListTile(
+                    leading: ImageIcon(
+                      color: _isDarkMode ? Colors.white : Colors.black,
+                      AssetImage(
+                        'assets/images/Vector1.png',
                       ),
                     ),
+                    title: Text(
+                      'Notification',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    textColor: _isDarkMode ? Colors.white : Colors.black,
                   ),
-                  Divider(
-                    color: Colors.transparent,
-                    height: 10,
-                  ),
+
+                  ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Account(),
+                          ));
+                    },
+                    splashColor: Color.fromRGBO(153, 172, 241, 0.11),
+                    leading: ImageIcon(
+                      color: _isDarkMode ? Colors.white : Colors.black,
+                      AssetImage(
+                        'assets/images/Vector.png',
+                      ),
+                    ),
+                    title: Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    textColor: _isDarkMode ? Colors.white : Colors.black,
+                  )
                 ],
               ),
               Expanded(
@@ -654,32 +486,28 @@ class _Pay100State extends State<Pay100> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: SizedBox(
                         height: 80,
-                        child: Card(
-                          elevation: 0,
-                          color: Color.fromRGBO(153, 172, 241, 0.11),
-                          child: Center(
-                            child: ListTile(
-                              onTap: () async {
-                                await logSignInOrOut('Sign Out');
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SignIn(),
-                                  ),
-                                );
-                              },
-                              title: Text("Logout",
-                                  style: TextStyle(
-                                      color: _isDarkMode
-                                          ? Colors.white
-                                          : Colors
-                                              .black)), // Change font color based on _isDarkMode
-                              leading: Icon(Icons.logout,
-                                  color: _isDarkMode
-                                      ? Colors.white
-                                      : Colors
-                                          .black), // Change font color based on _isDarkMode
-                            ),
+                        child: Center(
+                          child: ListTile(
+                            onTap: () async {
+                              await logSignInOrOut('Sign Out');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignIn(),
+                                ),
+                              );
+                            },
+                            title: Text("Log Out",
+                                style: TextStyle(
+                                    color: _isDarkMode
+                                        ? Colors.white
+                                        : Colors
+                                            .black)), // Change font color based on _isDarkMode
+                            leading: Icon(Icons.logout,
+                                color: _isDarkMode
+                                    ? Colors.white
+                                    : Colors
+                                        .black), // Change font color based on _isDarkMode
                           ),
                         ),
                       ),
@@ -774,235 +602,261 @@ class _Pay100State extends State<Pay100> {
         // //     ),
         // //   ],
         // ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Builder(
-                        builder: (BuildContext context) {
-                          return IconButton(
-                            icon: const Icon(
-                              Icons.account_circle,
-                              color: Colors.redAccent,
-                              size: 40,
-                            ),
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            tooltip: MaterialLocalizations.of(context)
-                                .openAppDrawerTooltip,
-                          );
-                        },
-                      ),
-                      Image.asset(
-                        "assets/images/100pay.png",
-                        width: 100,
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: SizedBox(
-                      height: 40,
-                      width: 120,
-                      child: DefaultTextStyle.merge(
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                        child: IconTheme.merge(
-                          data: IconThemeData(color: Colors.white),
-                          child: AnimatedToggleSwitch<bool>.dual(
-                            current: positive,
-                            first: false,
-                            second: true,
-                            spacing: 45.0,
-                            animationCurve: Curves.easeInOut,
-                            animationDuration:
-                                const Duration(milliseconds: 600),
-                            style: ToggleStyle(
-                              borderColor: Colors.transparent,
-                              indicatorColor: Colors.white,
-                              backgroundColor: Colors.black,
-                            ),
-                            styleBuilder: (value) => ToggleStyle(
-                                backgroundColor:
-                                    value ? green : Colors.red[800]),
-                            borderWidth: 5.0,
-                            height: 60.0,
-                            loadingIconBuilder: (context, global) =>
-                                CupertinoActivityIndicator(
-                                    color: Color.lerp(Colors.red[800], green,
-                                        global.position)),
-                            onChanged: (b) => setState(() => positive = b),
-                            iconBuilder: (value) => value
-                                ? Icon(Icons.account_circle,
-                                    color: green, size: 20.0)
-                                : Image.asset(
-                                    'assets/images/100pay4.png',
-                                    height: 16,
-                                  ),
-                            textBuilder: (value) => value
-                                ? Align(
-                                    alignment: AlignmentDirectional.centerStart,
-                                    child: Text(
-                                      'Input',
-                                      style: TextStyle(fontSize: 15),
-                                    ))
-                                : Align(
-                                    alignment: AlignmentDirectional.centerEnd,
-                                    child: Text(
-                                      'Express',
-                                      style: TextStyle(fontSize: 11.5),
-                                    )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+        body: Stack(
+          children: [
+            AnimatedContainer(
+              duration: Duration(milliseconds: 200),
+              color: Colors.black.withOpacity(_drawerOpen ? 0.5 : 0.0),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(color: Colors.transparent),
               ),
-              // Image.asset(
-              //   "assets/images/100pay.png",
-              //   width: 100,
-              // ),
-
-              Container(
-                alignment: Alignment.bottomRight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Image.asset(
-                    //   "assets/images/100pay.png",
-                    //   width: 100,
-                    // ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child: RichText(
-                        text: TextSpan(
+            ),
+            SafeArea(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            TextSpan(
-                              text: '₦ ', // Naira symbol
-                              style: TextStyle(
-                                fontSize: 40.0,
-                                color:
-                                    _isDarkMode ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Builder(
+                              builder: (BuildContext context) {
+                                return IconButton(
+                                  icon: const Icon(
+                                    Icons.account_circle,
+                                    color: Colors.redAccent,
+                                    size: 40,
+                                  ),
+                                  onPressed: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
+                                  tooltip: MaterialLocalizations.of(context)
+                                      .openAppDrawerTooltip,
+                                );
+                              },
                             ),
-                            TextSpan(
-                              text: displayedExpression,
-                              style: TextStyle(
-                                fontSize: 40.0,
-                                color:
-                                    _isDarkMode ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: Image.asset(
+                                imageAssetPath,
+                                // "assets/images/100pay.png",
+                                width: 100,
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-
-                    // Text(
-                    //   '₦ $displayedExpression',
-                    //   style: TextStyle(
-                    //     fontSize: 40.0,
-                    //     color: Colors.black,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-              // const Divider(),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40, right: 40),
-                      child: buildCalculatorButtons(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 65,
-                        vertical: 20,
-                      ),
-                      child: SizedBox(
-                        height: 55,
-                        width: double.infinity,
-                        child:
-                            // Consumer<AuthProvider>(
-                            //   builder: (context, authProvider, child) {
-                            //     apiKey = authProvider.apiKey;
-                            //     return
-                            ElevatedButton(
-                          onPressed: () async {
-                            if (displayedExpression.isNotEmpty) {
-                              if (positive) {
-                                _showInputBottomSheet();
-                                // Code for 'Input' action
-                                print('Input Button Pressed');
-                              } else {
-                                String? apiKey =
-                                    await fetchApiKeyFromLocalStorage();
-                                var api = HundredPay.makePayment(
-                                  customerEmail: 'gideongabriel557@gmail.com',
-                                  customerPhoneNumber: '08121154848',
-                                  customerName: 'Gideon Gabriel',
-                                  customerUserId: '293391',
-                                  amount:
-                                      displayedExpression.replaceAll(',', ''),
-                                  userId: '6143bfb7fe85e0020bf243f9',
-                                  refId: '012232',
-                                  description: 'express payment',
-                                  apiKey: '$apiKey',
-                                  currency: 'NGN',
-                                  country: 'NG',
-                                  chargeSource: 'api',
-                                  callBackUrl:
-                                      'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
-                                  onError: (error) {},
-                                  context: context,
-                                );
-                                // Code for 'Express' action
-                                print('Express Button Pressed');
-
-                                print(api.hashCode);
-                              }
-                            }
-                            // Define the actions for 'Input' and 'Express' here
-                          },
-                          child: Text(
-                            positive ? 'Input details' : 'Express',
-                            style: TextStyle(fontSize: 25, color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: SizedBox(
+                            height: 40,
+                            width: 120,
+                            child: DefaultTextStyle.merge(
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                              child: IconTheme.merge(
+                                data: IconThemeData(color: Colors.white),
+                                child: AnimatedToggleSwitch<bool>.dual(
+                                  current: positive,
+                                  first: false,
+                                  second: true,
+                                  spacing: 45.0,
+                                  animationCurve: Curves.easeInOut,
+                                  animationDuration:
+                                      const Duration(milliseconds: 600),
+                                  style: ToggleStyle(
+                                    borderColor: Colors.transparent,
+                                    indicatorColor: Colors.white,
+                                    backgroundColor: Colors.black,
+                                  ),
+                                  styleBuilder: (value) => ToggleStyle(
+                                      backgroundColor:
+                                          value ? green : Colors.red[800]),
+                                  borderWidth: 5.0,
+                                  height: 60.0,
+                                  loadingIconBuilder: (context, global) =>
+                                      CupertinoActivityIndicator(
+                                          color: Color.lerp(Colors.red[800],
+                                              green, global.position)),
+                                  onChanged: (b) =>
+                                      setState(() => positive = b),
+                                  iconBuilder: (value) => value
+                                      ? Icon(Icons.account_circle,
+                                          color: green, size: 20.0)
+                                      : Image.asset(
+                                          'assets/images/100pay4.png',
+                                          height: 16,
+                                        ),
+                                  textBuilder: (value) => value
+                                      ? Align(
+                                          alignment:
+                                              AlignmentDirectional.centerStart,
+                                          child: Text(
+                                            'Input',
+                                            style: TextStyle(fontSize: 15),
+                                          ))
+                                      : Align(
+                                          alignment:
+                                              AlignmentDirectional.centerEnd,
+                                          child: Text(
+                                            'Express',
+                                            style: TextStyle(fontSize: 11.5),
+                                          )),
+                                ),
+                              ),
                             ),
-                            backgroundColor:
-                                positive ? Colors.green : Colors.red[800],
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  // Image.asset(
+                  //   "assets/images/100pay.png",
+                  //   width: 100,
+                  // ),
+
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Image.asset(
+                        //   "assets/images/100pay.png",
+                        //   width: 100,
+                        // ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '₦ ', // Naira symbol
+                                  style: TextStyle(
+                                    fontSize: 40.0,
+                                    color: _isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: displayedExpression,
+                                  style: TextStyle(
+                                    fontSize: 40.0,
+                                    color: _isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // Text(
+                        //   '₦ $displayedExpression',
+                        //   style: TextStyle(
+                        //     fontSize: 40.0,
+                        //     color: Colors.black,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  // const Divider(),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40, right: 40),
+                          child: buildCalculatorButtons(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 65,
+                            vertical: 20,
+                          ),
+                          child: SizedBox(
+                            height: 55,
+                            width: double.infinity,
+                            child:
+                                // Consumer<AuthProvider>(
+                                //   builder: (context, authProvider, child) {
+                                //     apiKey = authProvider.apiKey;
+                                //     return
+                                ElevatedButton(
+                              onPressed: () async {
+                                if (displayedExpression.isNotEmpty) {
+                                  if (positive) {
+                                    _showInputBottomSheet();
+                                    // Code for 'Input' action
+                                    print('Input Button Pressed');
+                                  } else {
+                                    String? apiKey =
+                                        await fetchApiKeyFromLocalStorage();
+                                    var api = HundredPay.makePayment(
+                                      customerEmail:
+                                          'gideongabriel557@gmail.com',
+                                      customerPhoneNumber: '08121154848',
+                                      customerName: 'Gideon Gabriel',
+                                      customerUserId: '293391',
+                                      amount: displayedExpression.replaceAll(
+                                          ',', ''),
+                                      userId: '6143bfb7fe85e0020bf243f9',
+                                      refId: '012232',
+                                      description: 'express payment',
+                                      apiKey: '$apiKey',
+                                      currency: 'NGN',
+                                      country: 'NG',
+                                      chargeSource: 'api',
+                                      callBackUrl:
+                                          'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
+                                      onError: (error) {},
+                                      context: context,
+                                    );
+                                    // Code for 'Express' action
+                                    print('Express Button Pressed');
+
+                                    print(api.hashCode);
+                                  }
+                                }
+                                // Define the actions for 'Input' and 'Express' here
+                              },
+                              child: Text(
+                                positive ? 'Pay' : 'Express Pay',
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.white),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                backgroundColor:
+                                    positive ? Colors.green : Colors.red[800],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

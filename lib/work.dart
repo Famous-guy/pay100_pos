@@ -41,6 +41,256 @@ class _pay100State extends State<pay100> {
   //     },
   //   );
   // }
+  // Padding(
+  //   padding: const EdgeInsets.symmetric(horizontal: 15),
+  //   child: SizedBox(
+  //     height: 80,
+  //     child: Card(
+  //       elevation: 0,
+  //       color: Color.fromRGBO(153, 172, 241, 0.11),
+  //       child: Center(
+  //         child: ListTile(
+  //           onTap: () {
+  //             Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => Account(),
+  //                 ));
+  //           },
+  //           splashColor: Color.fromRGBO(153, 172, 241, 0.11),
+  //           leading: Icon(Icons.account_circle,
+  //               color: _isDarkMode
+  //                   ? Colors.white
+  //                   : Colors
+  //                       .black), // Change font color based on _isDarkMode
+  //           title: Text("My Account Profile",
+  //               style: TextStyle(
+  //                   color: _isDarkMode
+  //                       ? Colors.white
+  //                       : Colors
+  //                           .black)), // Change font color based on _isDarkMode
+  //           trailing: Icon(Icons.arrow_forward_ios_outlined,
+  //               color: _isDarkMode
+  //                   ? Colors.white
+  //                   : Colors
+  //                       .black), // Change font color based on _isDarkMode
+  //         ),
+  //       ),
+  //     ),
+  //   ),
+  // ),
+  // Padding(
+  //   padding: const EdgeInsets.symmetric(horizontal: 15),
+  //   child: SizedBox(
+  //     height: 80,
+  //     child: Card(
+  //       elevation: 0,
+  //       color: Color.fromRGBO(153, 172, 241, 0.11),
+  //       child: Center(
+  //         child: ListTile(
+  //           onTap: () {
+  //             Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => MySettingsPage(),
+  //                 ));
+  //           },
+  //           splashColor: Color.fromRGBO(153, 172, 241, 0.11),
+  //           leading: Icon(Icons.settings,
+  //               color: _isDarkMode
+  //                   ? Colors.white
+  //                   : Colors
+  //                       .black), // Change font color based on _isDarkMode
+  //           title: Text("Settings",
+  //               style: TextStyle(
+  //                   color: _isDarkMode
+  //                       ? Colors.white
+  //                       : Colors
+  //                           .black)), // Change font color based on _isDarkMode
+  //           trailing: Icon(Icons.arrow_forward_ios_outlined,
+  //               color: _isDarkMode
+  //                   ? Colors.white
+  //                   : Colors
+  //                       .black), // Change font color based on _isDarkMode
+  //         ),
+  //       ),
+  //     ),
+  //   ),
+  // ),
+
+  // Divider(
+  //   color: Colors.transparent,
+  //   height: 10,
+  // ),
+
+   //  Drawer(
+            //   child: Column(
+            //     children: [
+            //       // DrawerHeader(
+            //       //   child: Image.asset(
+            //       //     "assets/images/100pay.png",
+            //       //     width: 100,
+            //       //   ),
+            //       // ),
+            //       Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         // rgba(153, 172, 241, 0.11)
+            //         children: [
+            //           SizedBox(
+            //             height: 20,
+            //           ),
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Image.asset(
+            //                 "assets/images/100pay.png",
+            //                 width: 100,
+            //               ),
+            //               SizedBox(
+            //                 height: 40,
+            //                 width: 120,
+            //                 child: DefaultTextStyle.merge(
+            //                   style: const TextStyle(
+            //                     color: Colors.black,
+            //                     fontSize: 18.0,
+            //                     fontWeight: FontWeight.bold,
+            //                   ),
+            //                   child: GestureDetector(
+            //                     onTap: () {
+            //                       setState(() {
+            //                         _isDarkMode = !_isDarkMode; // Toggle dark mode
+            //                       });
+            //                     },
+            //                     child: IconTheme.merge(
+            //                       data: IconThemeData(color: Colors.black),
+            //                       child: _isDarkMode
+            //                           ? Icon(Icons.brightness_5,
+            //                               color: Colors.white,
+            //                               size:
+            //                                   30.0) // Brightness icon for dark mode
+            //                           : Icon(Icons.nightlight_round,
+            //                               color: Colors
+            //                                   .grey.shade600, // Changed to black
+            //                               size: 30.0), // Moon icon for light mode
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //           Divider(),
+            //           Padding(
+            //             padding: const EdgeInsets.symmetric(horizontal: 15),
+            //             child: SizedBox(
+            //               height: 80,
+            //               child: Card(
+            //                 elevation: 0,
+            //                 color: Color.fromRGBO(153, 172, 241, 0.11),
+            //                 child: Center(
+            //                   child: ListTile(
+            //                     onTap: () {
+            //                       Navigator.push(
+            //                           context,
+            //                           MaterialPageRoute(
+            //                             builder: (context) => Account(),
+            //                           ));
+            //                     },
+            //                     // focusColor: Colors.amber,
+            //                     splashColor: Color.fromRGBO(153, 172, 241, 0.11),
+
+            //                     leading: Icon(Icons.account_circle,
+            //                         color: Colors.black), // Changed to black
+            //                     title: Text("My Account Profile",
+            //                         style: TextStyle(
+            //                             color: Colors.black)), // Changed to black
+            //                     trailing: Icon(Icons.arrow_forward_ios_outlined,
+            //                         color: Colors.black), // Changed to black
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //           Padding(
+            //             padding: const EdgeInsets.symmetric(horizontal: 15),
+            //             // padding: const EdgeInsets.all(8.0),
+            //             child: SizedBox(
+            //               height: 80,
+            //               child: Card(
+            //                 elevation: 0,
+            //                 color: Color.fromRGBO(153, 172, 241, 0.11),
+            //                 child: Center(
+            //                   child: ListTile(
+            //                     onTap: () {
+            //                       Navigator.push(
+            //                           context,
+            //                           MaterialPageRoute(
+            //                             builder: (context) => MySettingsPage(),
+            //                           ));
+            //                     },
+            //                     // focusColor: Colors.amber,
+            //                     splashColor: Color.fromRGBO(153, 172, 241, 0.11),
+
+            //                     leading: Icon(Icons.settings,
+            //                         color: Colors.black), // Changed to black
+            //                     title: Text("Settings",
+            //                         style: TextStyle(
+            //                             color: Colors.black)), // Changed to black
+            //                     trailing: Icon(Icons.arrow_forward_ios_outlined,
+            //                         color: Colors.black), // Changed to black
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ),
+            //           Divider(
+            //             color: Colors.transparent,
+            //             height: 10,
+            //           ),
+            //         ],
+            //       ),
+            //       Expanded(
+            //         child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.end,
+            //           children: [
+            //             Padding(
+            //               // padding: const EdgeInsets.only(bottom: 20),
+            //               padding: const EdgeInsets.symmetric(horizontal: 15),
+            //               child: SizedBox(
+            //                 height: 80,
+            //                 child: Card(
+            //                   elevation: 0,
+            //                   color: Color.fromRGBO(153, 172, 241, 0.11),
+            //                   child: Center(
+            //                     child: ListTile(
+            //                       onTap: () async {
+            //                         await logSignInOrOut('Sign Out');
+            //                         Navigator.push(
+            //                           context,
+            //                           MaterialPageRoute(
+            //                             builder: (context) => SignIn(),
+            //                           ),
+            //                         );
+            //                       },
+            //                       title: const Text("Logout",
+            //                           style: TextStyle(
+            //                               color: Colors.black)), // Changed to black
+            //                       leading: const Icon(Icons.logout,
+            //                           color: Colors.black), // Changed to black
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //             Divider(
+            //               color: Colors.transparent,
+            //               height: 20,
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
   void launchURL(String url) async {
     if (await canLaunch(url)) {
