@@ -256,6 +256,7 @@ class _Pay100State extends State<Pay100> {
       buttonChild = Text(
         buttonText,
         style: TextStyle(
+          fontFamily: 'space_grotesk',
           fontSize: fontSize,
           color: _isDarkMode ? Colors.white : Colors.black,
           fontWeight: FontWeight.w500,
@@ -435,6 +436,7 @@ class _Pay100State extends State<Pay100> {
                     title: Text(
                       'My Account',
                       style: TextStyle(
+                        fontFamily: 'space_grotesk',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -452,6 +454,7 @@ class _Pay100State extends State<Pay100> {
                     title: Text(
                       'Notification',
                       style: TextStyle(
+                        fontFamily: 'space_grotesk',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -478,6 +481,7 @@ class _Pay100State extends State<Pay100> {
                       'Transactions',
                       style: TextStyle(
                         fontSize: 16,
+                        fontFamily: 'space_grotesk',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -558,14 +562,14 @@ class _Pay100State extends State<Pay100> {
                             );
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Image.asset(
-                            imageAssetPath,
-                            // "assets/images/100pay.png",
-                            width: 100,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 15),
+                        //   child: Image.asset(
+                        //     imageAssetPath,
+                        //     // "assets/images/100pay.png",
+                        //     width: 100,
+                        //   ),
+                        // ),
                       ],
                     ),
                     Padding(
@@ -649,6 +653,7 @@ class _Pay100State extends State<Pay100> {
                               Text(
                                 '₦ $displayedExpression',
                                 style: TextStyle(
+                                  fontFamily: 'space_grotesk',
                                   fontSize: 36.0,
                                   color:
                                       _isDarkMode ? Colors.white : Colors.black,

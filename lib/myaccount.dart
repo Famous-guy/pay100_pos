@@ -147,7 +147,11 @@ class _Pay100TokenState extends State<Pay100Token> {
           ),
         ),
         titleTextStyle: TextStyle(
-            color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+          fontFamily: 'space_grotesk',
+          color: Colors.white,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
         title: Text('app.100pay.co'),
       ),
       body: Center(
