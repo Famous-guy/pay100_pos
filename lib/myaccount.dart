@@ -101,6 +101,8 @@
 //   }
 // }
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:pay100_pos/test.dart';
@@ -167,6 +169,11 @@ class _Pay100TokenState extends State<Pay100Token> {
                 ),
                 Expanded(
                   child: InAppWebView(
+                    gestureRecognizers: {
+                      Factory<VerticalDragGestureRecognizer>(
+                        () => VerticalDragGestureRecognizer(),
+                      ),
+                    },
                     initialUrlRequest: URLRequest(
                       url: Uri.parse('https://app.100pay.co/login'),
                     ),
