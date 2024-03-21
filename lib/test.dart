@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hundredpay/hundredpay.dart';
 import 'package:pay100_pos/main.dart';
+import 'package:pay100_pos/myaccount.dart';
 import 'package:pay100_pos/onboarding_screen/settings.dart';
 import 'package:pay100_pos/provider/auth.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,8 @@ import 'package:intl/intl.dart';
 import 'package:pay100_pos/my_account.dart';
 import 'package:pay100_pos/onboarding_screen/signin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+// import 'src/hundred_pay.dart';
 
 class Pay100 extends StatefulWidget {
   // final String apikey;
@@ -425,7 +428,7 @@ class _Pay100State extends State<Pay100> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Account(),
+                            builder: (context) => Pay100Token(),
                           ));
                     },
                     leading: Icon(Icons.account_circle),
@@ -468,11 +471,11 @@ class _Pay100State extends State<Pay100> {
                     leading: ImageIcon(
                       color: _isDarkMode ? Colors.white : Colors.black,
                       AssetImage(
-                        'assets/images/Vector.png',
+                        'assets/images/clock.png',
                       ),
                     ),
                     title: Text(
-                      'Payment',
+                      'Transactions',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -493,6 +496,9 @@ class _Pay100State extends State<Pay100> {
                         child: Center(
                           child: ListTile(
                             onTap: () async {
+                              print('about to get cleared!');
+                              clearSharedPreferences();
+                              print('cleared');
                               await logSignInOrOut('Sign Out');
                               Navigator.push(
                                 context,
@@ -530,7 +536,7 @@ class _Pay100State extends State<Pay100> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -588,18 +594,19 @@ class _Pay100State extends State<Pay100> {
                                 backgroundColor: Colors.black,
                               ),
                               styleBuilder: (value) => ToggleStyle(
-                                  backgroundColor:
-                                      value ? green : Colors.red[800]),
+                                  backgroundColor: value
+                                      ? Color(0xffF20831)
+                                      : Color(0xffF20831)),
                               borderWidth: 5.0,
                               // height: 60.0,
                               loadingIconBuilder: (context, global) =>
                                   CupertinoActivityIndicator(
-                                      color: Color.lerp(Colors.red[800], green,
-                                          global.position)),
+                                      color: Color.lerp(Color(0xffF20831),
+                                          green, global.position)),
                               onChanged: (b) => setState(() => positive = b),
                               iconBuilder: (value) => value
                                   ? Icon(Icons.account_circle,
-                                      color: green, size: 20.0)
+                                      color: Color(0xffF20831), size: 20.0)
                                   : Image.asset(
                                       'assets/images/100pay4.png',
                                       height: 16,
@@ -626,54 +633,6 @@ class _Pay100State extends State<Pay100> {
                   ],
                 ),
               ),
-              // Expanded(
-              //   flex: 2,
-              //   child: Stack(
-              //     children: [
-              //       Center(
-              //         child: Container(
-              //           alignment: Alignment.center,
-              //           child: Column(
-              //             crossAxisAlignment: CrossAxisAlignment.center,
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               // SizedBox(
-              //               //   height: 20,
-              //               // ),
-              //               RichText(
-              //                 text: TextSpan(
-              //                   children: [
-              //                     TextSpan(
-              //                       text: '₦ ', // Naira symbol
-              //                       style: TextStyle(
-              //                         fontSize: 40.0,
-              //                         color: _isDarkMode
-              //                             ? Colors.white
-              //                             : Colors.black,
-              //                         fontWeight: FontWeight.bold,
-              //                       ),
-              //                     ),
-              //                     TextSpan(
-              //                       text: displayedExpression,
-              //                       style: TextStyle(
-              //                         fontSize: 40.0,
-              //                         color: _isDarkMode
-              //                             ? Colors.white
-              //                             : Colors.black,
-              //                         fontWeight: FontWeight.bold,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              // //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
               Expanded(
                 flex: 6,
                 child: Column(
@@ -690,10 +649,10 @@ class _Pay100State extends State<Pay100> {
                               Text(
                                 '₦ $displayedExpression',
                                 style: TextStyle(
-                                  fontSize: 40.0,
+                                  fontSize: 36.0,
                                   color:
                                       _isDarkMode ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
@@ -763,8 +722,9 @@ class _Pay100State extends State<Pay100> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                backgroundColor:
-                                    positive ? Colors.green : Colors.red[800],
+                                backgroundColor: positive
+                                    ? Color(0xffF20831)
+                                    : Color(0xffF20831),
                               ),
                             ),
                           ),
@@ -780,232 +740,13 @@ class _Pay100State extends State<Pay100> {
             ],
           ),
         ),
-// HundredPay.
-        // SafeArea(
-        //   child: Column(
-        //     children: [
-        //       Padding(
-        //         padding: const EdgeInsets.only(top: 10),
-        //         child: Expanded(
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Row(
-        //                 children: [
-        //                   Builder(
-        //                     builder: (BuildContext context) {
-        //                       return IconButton(
-        //                         icon: const Icon(
-        //                           Icons.account_circle,
-        //                           color: Colors.redAccent,
-        //                           size: 40,
-        //                         ),
-        //                         onPressed: () {
-        //                           Scaffold.of(context).openDrawer();
-        //                         },
-        //                         tooltip: MaterialLocalizations.of(context)
-        //                             .openAppDrawerTooltip,
-        //                       );
-        //                     },
-        //                   ),
-        //                   Padding(
-        //                     padding: const EdgeInsets.only(left: 15),
-        //                     child: Image.asset(
-        //                       imageAssetPath,
-        //                       // "assets/images/100pay.png",
-        //                       width: 100,
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //               Padding(
-        //                 padding: const EdgeInsets.only(right: 15),
-        //                 child: SizedBox(
-        //                   height: 40,
-        //                   width: 120,
-        //                   child: DefaultTextStyle.merge(
-        //                     style: const TextStyle(
-        //                         color: Colors.white,
-        //                         fontSize: 18.0,
-        //                         fontWeight: FontWeight.bold),
-        //                     child: IconTheme.merge(
-        //                       data: IconThemeData(color: Colors.white),
-        //                       child: AnimatedToggleSwitch<bool>.dual(
-        //                         current: positive,
-        //                         first: false,
-        //                         second: true,
-        //                         spacing: 45.0,
-        //                         animationCurve: Curves.easeInOut,
-        //                         animationDuration:
-        //                             const Duration(milliseconds: 600),
-        //                         style: ToggleStyle(
-        //                           borderColor: Colors.transparent,
-        //                           indicatorColor: Colors.white,
-        //                           backgroundColor: Colors.black,
-        //                         ),
-        //                         styleBuilder: (value) => ToggleStyle(
-        //                             backgroundColor:
-        //                                 value ? green : Colors.red[800]),
-        //                         borderWidth: 5.0,
-        //                         height: 60.0,
-        //                         loadingIconBuilder: (context, global) =>
-        //                             CupertinoActivityIndicator(
-        //                                 color: Color.lerp(Colors.red[800],
-        //                                     green, global.position)),
-        //                         onChanged: (b) => setState(() => positive = b),
-        //                         iconBuilder: (value) => value
-        //                             ? Icon(Icons.account_circle,
-        //                                 color: green, size: 20.0)
-        //                             : Image.asset(
-        //                                 'assets/images/100pay4.png',
-        //                                 height: 16,
-        //                               ),
-        //                         textBuilder: (value) => value
-        //                             ? Align(
-        //                                 alignment:
-        //                                     AlignmentDirectional.centerStart,
-        //                                 child: Text(
-        //                                   'Input',
-        //                                   style: TextStyle(fontSize: 15),
-        //                                 ))
-        //                             : Align(
-        //                                 alignment:
-        //                                     AlignmentDirectional.centerEnd,
-        //                                 child: Text(
-        //                                   'Express',
-        //                                   style: TextStyle(fontSize: 11.5),
-        //                                 )),
-        //                       ),
-        //                     ),
-        //                   ),
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       Expanded(
-        //         child: Stack(
-        //           children: [
-        //             Center(
-        //               child: Container(
-        //                 alignment: Alignment.center,
-        //                 child: Column(
-        //                   crossAxisAlignment: CrossAxisAlignment.center,
-        //                   mainAxisAlignment: MainAxisAlignment.center,
-        //                   children: [
-        //                     SizedBox(
-        //                       height: 20,
-        //                     ),
-        //                     RichText(
-        //                       text: TextSpan(
-        //                         children: [
-        //                           TextSpan(
-        //                             text: '₦ ', // Naira symbol
-        //                             style: TextStyle(
-        //                               fontSize: 40.0,
-        //                               color: _isDarkMode
-        //                                   ? Colors.white
-        //                                   : Colors.black,
-        //                               fontWeight: FontWeight.bold,
-        //                             ),
-        //                           ),
-        //                           TextSpan(
-        //                             text: displayedExpression,
-        //                             style: TextStyle(
-        //                               fontSize: 40.0,
-        //                               color: _isDarkMode
-        //                                   ? Colors.white
-        //                                   : Colors.black,
-        //                               fontWeight: FontWeight.bold,
-        //                             ),
-        //                           ),
-        //                         ],
-        //                       ),
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       Expanded(
-        //         flex: 5,
-        //         child: Column(
-        //           mainAxisAlignment: MainAxisAlignment.end,
-        //           children: [
-        //             Padding(
-        //               padding: const EdgeInsets.only(left: 40, right: 40),
-        //               child: buildCalculatorButtons(),
-        //             ),
-        //             Padding(
-        //               padding: const EdgeInsets.symmetric(
-        //                 horizontal: 65,
-        //                 vertical: 20,
-        //               ),
-        //               child: SizedBox(
-        //                 height: 55,
-        //                 width: double.infinity,
-        //                 child: ElevatedButton(
-        //                   onPressed: () async {
-        //                     if (displayedExpression.isNotEmpty) {
-        //                       if (positive) {
-        //                         _showInputBottomSheet();
-        //                         // Code for 'Input' action
-        //                         print('Input Button Pressed');
-        //                       } else {
-        //                         String? apiKey =
-        //                             await fetchApiKeyFromLocalStorage();
-        //                         var api = HundredPay.makePayment(
-        //                           customerEmail: 'gideongabriel557@gmail.com',
-        //                           customerPhoneNumber: '08121154848',
-        //                           customerName: 'Gideon Gabriel',
-        //                           customerUserId: '293391',
-        //                           amount:
-        //                               displayedExpression.replaceAll(',', ''),
-        //                           userId: '6143bfb7fe85e0020bf243f9',
-        //                           refId: '012232',
-        //                           description: 'express payment',
-        //                           apiKey: '$apiKey',
-        //                           currency: 'NGN',
-        //                           country: 'NG',
-        //                           chargeSource: 'api',
-        //                           callBackUrl:
-        //                               'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
-        //                           onError: (error) {},
-        //                           context: context,
-        //                         );
-        //                         // Code for 'Express' action
-        //                         print('Express Button Pressed');
-
-        //                         print(api.hashCode);
-        //                       }
-        //                     }
-        //                     // Define the actions for 'Input' and 'Express' here
-        //                   },
-        //                   child: Text(
-        //                     positive ? 'Pay' : 'Express Pay',
-        //                     style: TextStyle(fontSize: 25, color: Colors.white),
-        //                   ),
-        //                   style: ElevatedButton.styleFrom(
-        //                     shape: RoundedRectangleBorder(
-        //                       borderRadius: BorderRadius.circular(10),
-        //                     ),
-        //                     backgroundColor:
-        //                         positive ? Colors.green : Colors.red[800],
-        //                   ),
-        //                 ),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
+  }
+
+  void clearSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   bool _validateEmail(String value) {

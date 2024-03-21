@@ -3,7 +3,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class PayUi extends StatefulWidget {
   final String url;
-  const PayUi({Key? key, required this.url}) : super(key: key);
+  const PayUi(
+      {Key? key,
+      required this.url,
+      required Null Function(dynamic controller) onWebViewCreated})
+      : super(key: key);
 
   @override
   State<PayUi> createState() => _PayUiState();
