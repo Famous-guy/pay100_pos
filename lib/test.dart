@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hundredpay/hundredpay.dart';
 import 'package:pay100_pos/api/connectpos.dart';
+import 'package:pay100_pos/currencies.dart';
 import 'package:pay100_pos/main.dart';
 import 'package:pay100_pos/myaccount.dart';
 import 'package:pay100_pos/onboarding_screen/settings.dart';
@@ -57,6 +58,7 @@ class _Pay100State extends State<Pay100> {
     // fetchApiKeyFromFirestore();flu
   }
 
+  String? currency;
   Future<void> logSignInOrOut(String event) async {
     final prefs = await SharedPreferences.getInstance();
     final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
@@ -346,6 +348,14 @@ class _Pay100State extends State<Pay100> {
     });
   }
 
+  String getCurrencySymbol(String? currency) {
+    if (currency != null && currencies.containsKey(currency)) {
+      return currencies[currency]!;
+    } else {
+      return ''; // Return empty string if currency not found
+    }
+  }
+
   bool _drawerOpen = false;
 
   void _toggleDrawer() {
@@ -518,223 +528,481 @@ class _Pay100State extends State<Pay100> {
             ],
           ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Builder(
-                          builder: (BuildContext context) {
-                            return IconButton(
-                              icon: const Icon(
-                                Icons.account_circle,
-                                color: Colors.redAccent,
-                                size: 40,
-                              ),
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              tooltip: MaterialLocalizations.of(context)
-                                  .openAppDrawerTooltip,
-                            );
-                          },
-                        ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 15),
-                        //   child: Image.asset(
-                        //     imageAssetPath,
-                        //     // "assets/images/100pay.png",
-                        //     width: 100,
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: SizedBox(
-                        height: 40,
-                        width: 120,
-                        child: DefaultTextStyle.merge(
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold),
-                          child: IconTheme.merge(
-                            data: IconThemeData(color: Colors.white),
-                            child: AnimatedToggleSwitch<bool>.dual(
-                              current: positive,
-                              first: false,
-                              second: true,
-                              // spacing: 45.0,
-                              animationCurve: Curves.easeInOut,
-                              animationDuration:
-                                  const Duration(milliseconds: 600),
-                              style: ToggleStyle(
-                                borderColor: Colors.transparent,
-                                indicatorColor: Colors.white,
-                                backgroundColor: Colors.black,
-                              ),
-                              styleBuilder: (value) => ToggleStyle(
-                                  backgroundColor: value
-                                      ? Color(0xffF20831)
-                                      : Color(0xffF20831)),
-                              borderWidth: 5.0,
-                              // height: 60.0,
-                              loadingIconBuilder: (context, global) =>
-                                  CupertinoActivityIndicator(
-                                      color: Color.lerp(Color(0xffF20831),
-                                          green, global.position)),
-                              onChanged: (b) => setState(() => positive = b),
-                              iconBuilder: (value) => value
-                                  ? Icon(Icons.account_circle,
-                                      color: Color(0xffF20831), size: 20.0)
-                                  : Image.asset(
-                                      'assets/images/100pay4.png',
-                                      height: 16,
-                                    ),
-                              textBuilder: (value) => value
-                                  ? Align(
-                                      alignment:
-                                          AlignmentDirectional.centerStart,
-                                      child: Text(
-                                        'Input',
-                                        style: TextStyle(fontSize: 15),
-                                      ))
-                                  : Align(
-                                      alignment: AlignmentDirectional.centerEnd,
-                                      child: Text(
-                                        'Express',
-                                        style: TextStyle(fontSize: 11.5),
-                                      )),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 6,
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Center(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                displayedExpression.isEmpty
-                                    ? '₦ 0.00'
-                                    : '₦ $displayedExpression',
-                                style: TextStyle(
-                                  fontFamily: 'space_grotesk',
-                                  fontSize: 36.0,
-                                  color:
-                                      _isDarkMode ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40, right: 40),
-                          child: buildCalculatorButtons(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 65,
-                            vertical: 30,
-                          ),
-                          child: SizedBox(
-                            height: 55,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (displayedExpression.isNotEmpty) {
-                                  if (positive) {
-                                    _showInputBottomSheet();
-                                    // Code for 'Input' action
-                                    print('Input Button Pressed');
-                                  } else {
-                                    UserData userData =
-                                        await getUserDataFromPrefs(); // Retrieve user data
-                                    String? publicKey = userData.publicKey;
-                                    String? userid = userData.accountId;
-                                    String? currency = userData.currency;
-                                    String? email = userData.email;
-                                    var api = HundredPay.makePayment(
-                                      customerEmail: email,
-                                      customerPhoneNumber: '08121154848',
-                                      customerName: 'Gideon Gabriel',
-                                      customerUserId: userid,
-                                      amount: displayedExpression.replaceAll(
-                                          ',', ''),
-                                      userId: '6143bfb7fe85e0020bf243f9',
-                                      refId: '012232',
-                                      description: 'express payment',
-                                      apiKey: '$publicKey',
-                                      currency: currency,
-                                      country: 'NG',
-                                      chargeSource: 'api',
-                                      callBackUrl:
-                                          'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
-                                      onError: (error) {},
-                                      context: context,
+        body: FutureBuilder(
+          future: getUserDataFromPrefs(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              // Check if snapshot has data
+              if (snapshot.hasData) {
+                // Get currency symbol
+                String currencySymbol =
+                    getCurrencySymbol(snapshot.data!.currency);
+                return SafeArea(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Builder(
+                                  builder: (BuildContext context) {
+                                    return IconButton(
+                                      icon: const Icon(
+                                        Icons.account_circle,
+                                        color: Colors.redAccent,
+                                        size: 40,
+                                      ),
+                                      onPressed: () {
+                                        Scaffold.of(context).openDrawer();
+                                      },
+                                      tooltip: MaterialLocalizations.of(context)
+                                          .openAppDrawerTooltip,
                                     );
-                                    // Code for 'Express' action
-                                    print('Express Button Pressed');
-
-                                    print(api.hashCode);
-                                  }
-                                }
-                                // Define the actions for 'Input' and 'Express' here
-                              },
-                              child: Text(
-                                positive ? 'Pay' : 'Express Pay',
-                                style: TextStyle(
-                                    fontSize: 25, color: Colors.white),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                  },
                                 ),
-                                backgroundColor: positive
-                                    ? Color(0xffF20831)
-                                    : Color(0xffF20831),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(left: 15),
+                                //   child: Image.asset(
+                                //     imageAssetPath,
+                                //     // "assets/images/100pay.png",
+                                //     width: 100,
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: SizedBox(
+                                height: 40,
+                                width: 120,
+                                child: DefaultTextStyle.merge(
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
+                                  child: IconTheme.merge(
+                                    data: IconThemeData(color: Colors.white),
+                                    child: AnimatedToggleSwitch<bool>.dual(
+                                      current: positive,
+                                      first: false,
+                                      second: true,
+                                      // spacing: 45.0,
+                                      animationCurve: Curves.easeInOut,
+                                      animationDuration:
+                                          const Duration(milliseconds: 600),
+                                      style: ToggleStyle(
+                                        borderColor: Colors.transparent,
+                                        indicatorColor: Colors.white,
+                                        backgroundColor: Colors.black,
+                                      ),
+                                      styleBuilder: (value) => ToggleStyle(
+                                          backgroundColor: value
+                                              ? Color(0xffF20831)
+                                              : Color(0xffF20831)),
+                                      borderWidth: 5.0,
+                                      // height: 60.0,
+                                      loadingIconBuilder: (context, global) =>
+                                          CupertinoActivityIndicator(
+                                              color: Color.lerp(
+                                                  Color(0xffF20831),
+                                                  green,
+                                                  global.position)),
+                                      onChanged: (b) =>
+                                          setState(() => positive = b),
+                                      iconBuilder: (value) => value
+                                          ? Icon(Icons.account_circle,
+                                              color: Color(0xffF20831),
+                                              size: 20.0)
+                                          : Image.asset(
+                                              'assets/images/100pay4.png',
+                                              height: 16,
+                                            ),
+                                      textBuilder: (value) => value
+                                          ? Align(
+                                              alignment: AlignmentDirectional
+                                                  .centerStart,
+                                              child: Text(
+                                                'Input',
+                                                style: TextStyle(fontSize: 15),
+                                              ))
+                                          : Align(
+                                              alignment: AlignmentDirectional
+                                                  .centerEnd,
+                                              child: Text(
+                                                'Express',
+                                                style:
+                                                    TextStyle(fontSize: 11.5),
+                                              )),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        // SizedBox(
-                        //   height: 20,
-                        // )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                      ),
+                      Expanded(
+                        flex: 6,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Center(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        displayedExpression.isEmpty
+                                            ? '$currencySymbol 0.00'
+                                            : '$currencySymbol $displayedExpression',
+                                        style: TextStyle(
+                                          fontFamily: 'space_grotesk',
+                                          fontSize: 36.0,
+                                          color: _isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 40, right: 40),
+                                  child: buildCalculatorButtons(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 65,
+                                    vertical: 30,
+                                  ),
+                                  child: SizedBox(
+                                    height: 55,
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        if (displayedExpression.isNotEmpty) {
+                                          if (positive) {
+                                            _showInputBottomSheet();
+                                            // Code for 'Input' action
+                                            print('Input Button Pressed');
+                                          } else {
+                                            UserData userData =
+                                                await getUserDataFromPrefs(); // Retrieve user data
+                                            String? publicKey =
+                                                userData.publicKey;
+                                            String? userid = userData.accountId;
+                                            String? currency =
+                                                userData.currency;
+                                            String? email = userData.email;
+                                            var api = HundredPay.makePayment(
+                                              customerEmail: email,
+                                              customerPhoneNumber:
+                                                  '08121154848',
+                                              customerName: 'Gideon Gabriel',
+                                              customerUserId: userid,
+                                              amount: displayedExpression
+                                                  .replaceAll(',', ''),
+                                              userId:
+                                                  '6143bfb7fe85e0020bf243f9',
+                                              refId: '012232',
+                                              description: 'express payment',
+                                              apiKey: '$publicKey',
+                                              currency: currency,
+                                              country: 'NG',
+                                              chargeSource: 'api',
+                                              callBackUrl:
+                                                  'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
+                                              onError: (error) {},
+                                              context: context,
+                                            );
+                                            // Code for 'Express' action
+                                            print('Express Button Pressed');
+
+                                            print(api.hashCode);
+                                          }
+                                        }
+                                        // Define the actions for 'Input' and 'Express' here
+                                      },
+                                      child: Text(
+                                        positive ? 'Pay' : 'Express Pay',
+                                        style: TextStyle(
+                                            fontSize: 25, color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        backgroundColor: positive
+                                            ? Color(0xffF20831)
+                                            : Color(0xffF20831),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // SizedBox(
+                                //   height: 20,
+                                // )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(''),
+                );
+              } else {
+                return Center(
+                  child: Text(''),
+                );
+              }
+            }
+          },
+          // SafeArea(
+          //   child: Column(
+          //     children: [
+          //       Padding(
+          //         padding: const EdgeInsets.only(top: 0),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             Row(
+          //               children: [
+          //                 Builder(
+          //                   builder: (BuildContext context) {
+          //                     return IconButton(
+          //                       icon: const Icon(
+          //                         Icons.account_circle,
+          //                         color: Colors.redAccent,
+          //                         size: 40,
+          //                       ),
+          //                       onPressed: () {
+          //                         Scaffold.of(context).openDrawer();
+          //                       },
+          //                       tooltip: MaterialLocalizations.of(context)
+          //                           .openAppDrawerTooltip,
+          //                     );
+          //                   },
+          //                 ),
+          //                 // Padding(
+          //                 //   padding: const EdgeInsets.only(left: 15),
+          //                 //   child: Image.asset(
+          //                 //     imageAssetPath,
+          //                 //     // "assets/images/100pay.png",
+          //                 //     width: 100,
+          //                 //   ),
+          //                 // ),
+          //               ],
+          //             ),
+          //             Padding(
+          //               padding: const EdgeInsets.only(right: 15),
+          //               child: SizedBox(
+          //                 height: 40,
+          //                 width: 120,
+          //                 child: DefaultTextStyle.merge(
+          //                   style: const TextStyle(
+          //                       color: Colors.white,
+          //                       fontSize: 18.0,
+          //                       fontWeight: FontWeight.bold),
+          //                   child: IconTheme.merge(
+          //                     data: IconThemeData(color: Colors.white),
+          //                     child: AnimatedToggleSwitch<bool>.dual(
+          //                       current: positive,
+          //                       first: false,
+          //                       second: true,
+          //                       // spacing: 45.0,
+          //                       animationCurve: Curves.easeInOut,
+          //                       animationDuration:
+          //                           const Duration(milliseconds: 600),
+          //                       style: ToggleStyle(
+          //                         borderColor: Colors.transparent,
+          //                         indicatorColor: Colors.white,
+          //                         backgroundColor: Colors.black,
+          //                       ),
+          //                       styleBuilder: (value) => ToggleStyle(
+          //                           backgroundColor: value
+          //                               ? Color(0xffF20831)
+          //                               : Color(0xffF20831)),
+          //                       borderWidth: 5.0,
+          //                       // height: 60.0,
+          //                       loadingIconBuilder: (context, global) =>
+          //                           CupertinoActivityIndicator(
+          //                               color: Color.lerp(Color(0xffF20831),
+          //                                   green, global.position)),
+          //                       onChanged: (b) => setState(() => positive = b),
+          //                       iconBuilder: (value) => value
+          //                           ? Icon(Icons.account_circle,
+          //                               color: Color(0xffF20831), size: 20.0)
+          //                           : Image.asset(
+          //                               'assets/images/100pay4.png',
+          //                               height: 16,
+          //                             ),
+          //                       textBuilder: (value) => value
+          //                           ? Align(
+          //                               alignment:
+          //                                   AlignmentDirectional.centerStart,
+          //                               child: Text(
+          //                                 'Input',
+          //                                 style: TextStyle(fontSize: 15),
+          //                               ))
+          //                           : Align(
+          //                               alignment: AlignmentDirectional.centerEnd,
+          //                               child: Text(
+          //                                 'Express',
+          //                                 style: TextStyle(fontSize: 11.5),
+          //                               )),
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       Expanded(
+          //         flex: 6,
+          //         child: Column(
+          //           children: [
+          //             Expanded(
+          //               flex: 2,
+          //               child: Center(
+          //                 child: Container(
+          //                   alignment: Alignment.center,
+          //                   child: Column(
+          //                     crossAxisAlignment: CrossAxisAlignment.center,
+          //                     mainAxisAlignment: MainAxisAlignment.center,
+          //                     children: [
+          //                       Text(
+          //                         displayedExpression.isEmpty
+          //                             ? '₦ 0.00'
+          //                             : '₦ $displayedExpression',
+          //                         style: TextStyle(
+          //                           fontFamily: 'space_grotesk',
+          //                           fontSize: 36.0,
+          //                           color:
+          //                               _isDarkMode ? Colors.white : Colors.black,
+          //                           fontWeight: FontWeight.w500,
+          //                         ),
+          //                       ),
+          //                     ],
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             Column(
+          //               mainAxisAlignment: MainAxisAlignment.end,
+          //               children: [
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(left: 40, right: 40),
+          //                   child: buildCalculatorButtons(),
+          //                 ),
+          //                 Padding(
+          //                   padding: const EdgeInsets.symmetric(
+          //                     horizontal: 65,
+          //                     vertical: 30,
+          //                   ),
+          //                   child: SizedBox(
+          //                     height: 55,
+          //                     width: double.infinity,
+          //                     child: ElevatedButton(
+          //                       onPressed: () async {
+          //                         if (displayedExpression.isNotEmpty) {
+          //                           if (positive) {
+          //                             _showInputBottomSheet();
+          //                             // Code for 'Input' action
+          //                             print('Input Button Pressed');
+          //                           } else {
+          //                             UserData userData =
+          //                                 await getUserDataFromPrefs(); // Retrieve user data
+          //                             String? publicKey = userData.publicKey;
+          //                             String? userid = userData.accountId;
+          //                             String? currency = userData.currency;
+          //                             String? email = userData.email;
+          //                             var api = HundredPay.makePayment(
+          //                               customerEmail: email,
+          //                               customerPhoneNumber: '08121154848',
+          //                               customerName: 'Gideon Gabriel',
+          //                               customerUserId: userid,
+          //                               amount: displayedExpression.replaceAll(
+          //                                   ',', ''),
+          //                               userId: '6143bfb7fe85e0020bf243f9',
+          //                               refId: '012232',
+          //                               description: 'express payment',
+          //                               apiKey: '$publicKey',
+          //                               currency: currency,
+          //                               country: 'NG',
+          //                               chargeSource: 'api',
+          //                               callBackUrl:
+          //                                   'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
+          //                               onError: (error) {},
+          //                               context: context,
+          //                             );
+          //                             // Code for 'Express' action
+          //                             print('Express Button Pressed');
+
+          //                             print(api.hashCode);
+          //                           }
+          //                         }
+          //                         // Define the actions for 'Input' and 'Express' here
+          //                       },
+          //                       child: Text(
+          //                         positive ? 'Pay' : 'Express Pay',
+          //                         style: TextStyle(
+          //                             fontSize: 25, color: Colors.white),
+          //                       ),
+          //                       style: ElevatedButton.styleFrom(
+          //                         shape: RoundedRectangleBorder(
+          //                           borderRadius: BorderRadius.circular(10),
+          //                         ),
+          //                         backgroundColor: positive
+          //                             ? Color(0xffF20831)
+          //                             : Color(0xffF20831),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 // SizedBox(
+          //                 //   height: 20,
+          //                 // )
+          //               ],
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ),
       ),
     );
   }
+
+  // void getCurrency() async {
+  //   UserData userData = await getUserDataFromPrefs(); // Retrieve user data
+  //   currency = userData.currency;
+  // }
 
   void clearSharedPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
