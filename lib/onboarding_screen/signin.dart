@@ -339,15 +339,18 @@ class _SignInState extends State<SignIn> {
                                 await Provider.of<UserDataProvider>(
                                   context,
                                   listen: false,
-                                ).connectPOS(apiKeyController.text);
+                                ).connectPOS(
+                                  context,
+                                  apiKeyController.text,
+                                );
 
                                 // Navigate to the next screen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Pay100(),
-                                  ),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => Pay100(),
+                                //   ),
+                                // );
 
                                 _isLoading = false;
                               });
