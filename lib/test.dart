@@ -358,8 +358,11 @@ class _Pay100State extends State<Pay100> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     // apiKey = Provider.of<AuthProvider>(context).apiKey;
-    final bool isSmallScreen = screenSize.width < 600;
+    final Brightness brightness = MediaQuery.of(context).platformBrightness;
 
+    final bool isSmallScreen = screenSize.width < 600;
+    // final ThemeData theme = Theme.of(context);
+    _isDarkMode = brightness == Brightness.dark;
     // Adjust widget sizes, spacing, and layout based on screen size
     double paddingValue = isSmallScreen ? 20.0 : 40.0;
     double buttonFontSize = isSmallScreen ? 20.0 : 25.0;
