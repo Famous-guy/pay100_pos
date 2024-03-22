@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:hundredpay/src/hundred_pay_response_model.dart';
@@ -55,6 +56,9 @@ class MakeApiCall {
         throw Exception(response.reasonPhrase!);
       }
     } on Exception catch (e) {
+      throw Exception(e.toString());
+      // ignore: dead_code_on_catch_subtype
+    } on SocketException catch (e) {
       throw Exception(e.toString());
     }
   }
