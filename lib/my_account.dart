@@ -109,19 +109,6 @@ class _AccountState extends State<Account> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: 8, vertical: 3),
-                        //   child: Text(
-                        //     'Paid: $label',
-                        //     style: TextStyle(
-                        //       color: Color(0xff6B7280),
-                        //       fontWeight: FontWeight.w600,
-                        //       fontSize: 14,
-                        //       fontFamily: 'space_grotesk',
-                        //     ),
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 3),
