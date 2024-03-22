@@ -91,6 +91,7 @@ class HundredPay {
     required String apiKey,
     required BuildContext context,
   }) {
+    bool closeConfirmed = false;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -101,30 +102,158 @@ class HundredPay {
         topRight: Radius.circular(20),
       )),
       builder: (BuildContext bc) {
-        return Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              )),
-          height: MediaQuery.of(context).size.height * 0.9,
-          child: FutureBuilder<HundredPayResponseModel>(
-              future: s,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  throw snapshot.error!;
-                }
-                return PayUi(
-                  url: snapshot.data!.hostedUrl!,
+        return WillPopScope(
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                )),
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: FutureBuilder<HundredPayResponseModel>(
+                future: s,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator(
+                      
+                    ));
+                  }
+                  if (snapshot.hasError) {
+                    throw snapshot.error!;
+                  }
+                  return PayUi(
+                    url: snapshot.data!.hostedUrl!,
+                  );
+                }),
+          ),
+          // Container(
+          //   clipBehavior: Clip.hardEdge,
+          //   decoration: const BoxDecoration(
+          //     color: Colors.white,
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   height: MediaQuery.of(context).size.height * 0.9,
+          //   child:
+          //   Column(
+          //     children: [
+          //       Expanded(
+          //         child: FutureBuilder<HundredPayResponseModel>(
+          //           future: s,
+          //           builder: (context, snapshot) {
+          //             if (!snapshot.hasData) {
+          //               return const Center(child: CircularProgressIndicator());
+          //             }
+          //             if (snapshot.hasError) {
+          //               throw snapshot.error!;
+          //             }
+          //             return PayUi(
+          //               url: snapshot.data!.hostedUrl!,
+          //             );
+          //           },
+          //         ),
+          //       ),
+          //       // if (!closeConfirmed) // Show the close button only if the user hasn't confirmed closing
+          //       //   SizedBox(
+          //       //     height: 50, // Adjust as needed
+          //       //     child: ElevatedButton(
+          //       //       onPressed: () {
+          //       //         // Trigger the dialog when the user taps the close button
+          //       //         showDialog(
+          //       //           context: context,
+          //       //           builder: (BuildContext context) {
+          //       //             return AlertDialog(
+          //       //               title: Text('Quit Payment'),
+          //       //               content: Text(
+          //       //                   'Do you want to quit the payment process?'),
+          //       //               actions: [
+          //       //                 TextButton(
+          //       //                   onPressed: () {
+          //       //                     Navigator.of(context)
+          //       //                         .pop(); // Close the dialog
+          //       //                   },
+          //       //                   child: Text('Cancel'),
+          //       //                 ),
+          //       //                 TextButton(
+          //       //                   onPressed: () {
+          //       //                     closeConfirmed = true;
+          //       //                     Navigator.of(context)
+          //       //                         .pop(); // Close the dialog and bottom sheet
+          //       //                   },
+          //       //                   child: Text('Quit'),
+          //       //                 ),
+          //       //               ],
+          //       //             );
+          //       //           },
+          //       //         );
+          //       //       },
+          //       //       child: Text('Close'),
+          //       //     ),
+          //       //   ),
+          //     ],
+          //   ),
+
+          // ),
+
+          onWillPop: () async {
+            bool quit = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Quit Payment'),
+                  content: Text('Do you want to quit the payment process?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pop(false); // Stay on the bottom sheet
+                      },
+                      child: Text('Stay'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        closeConfirmed = true;
+                        Navigator.of(context)
+                            .pop(true); // Allow dismissing the bottom sheet
+                      },
+                      child: Text('Quit'),
+                    ),
+                  ],
                 );
-              }),
+              },
+            );
+            return quit ?? false;
+          },
         );
       },
     );
   }
 }
+
+// Container(
+//           clipBehavior: Clip.hardEdge,
+//           decoration: const BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.only(
+//                 topLeft: Radius.circular(20),
+//                 topRight: Radius.circular(20),
+//               )),
+//           height: MediaQuery.of(context).size.height * 0.9,
+//           child: FutureBuilder<HundredPayResponseModel>(
+//               future: s,
+//               builder: (context, snapshot) {
+//                 if (!snapshot.hasData) {
+//                   return const Center(child: CircularProgressIndicator());
+//                 }
+//                 if (snapshot.hasError) {
+//                   throw snapshot.error!;
+//                 }
+//                 return PayUi(
+//                   url: snapshot.data!.hostedUrl!,
+//                 );
+//               }),
+//         );
