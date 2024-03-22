@@ -11,7 +11,11 @@ class Account extends StatefulWidget {
 class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
-    String label = 'Market Square bsiness';
+    String label = 'Gideons Business';
+    String id = 'RT123456';
+    String time = '2:00pm';
+    int amount = 20000;
+    bool status = false;
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -28,8 +32,8 @@ class _AccountState extends State<Account> {
           ),
           titleTextStyle: TextStyle(
               color: Color(0xff4B5563),
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
               fontFamily: 'space_grotesk'),
           title: Text('Transaction History'),
         ),
@@ -38,20 +42,109 @@ class _AccountState extends State<Account> {
           child: ListView(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Image.asset(
                             'assets/images/success.png',
                           ),
-                          Text(
-                            'Paid $label',
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            child: Text(
+                              'Paid: $label',
+                              style: TextStyle(
+                                color: Color(0xff6B7280),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'space_grotesk',
+                              ),
+                            ),
                           )
                         ],
-                      )
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: Text(
+                              'ID: $id',
+                              style: TextStyle(
+                                color: Color(0xff6B7280),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                fontFamily: 'space_grotesk',
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            child: Text(
+                              '$time',
+                              style: TextStyle(
+                                color: Color(0xff9CA3AF),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                fontFamily: 'space_grotesk',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(
+                      //       horizontal: 8, vertical: 3),
+                      //   child: Text(
+                      //     'Paid: $label',
+                      //     style: TextStyle(
+                      //       color: Color(0xff6B7280),
+                      //       fontWeight: FontWeight.w600,
+                      //       fontSize: 14,
+                      //       fontFamily: 'space_grotesk',
+                      //     ),
+                      //   ),
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        child: Text(
+                          '+${amount}\$Pay',
+                          style: TextStyle(
+                            color: Color(0xff6B7280),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontFamily: 'space_grotesk',
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        child: Text(
+                          status ? 'Successful' : 'Failed',
+                          style: TextStyle(
+                            color:
+                                status ? Color(0xff22C55E) : Color(0xffEF4444),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontFamily: 'space_grotesk',
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ],
