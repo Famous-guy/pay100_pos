@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pay100_pos/test.dart';
 
@@ -8,7 +10,28 @@ class Account extends StatefulWidget {
   State<Account> createState() => _AccountState();
 }
 
+final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+    GlobalKey<RefreshIndicatorState>();
+
 class _AccountState extends State<Account> {
+  String displayedExpression = '';
+  List<String> transactionData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initial data loading
+    loadData();
+  }
+
+  void loadData() {
+    // Simulating fetching data from an API or database
+    // For demonstration, generating random transaction data
+    setState(() {
+      transactionData = List.generate(10, (index) => generateRandomText());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String label = 'Gideons Business';
@@ -37,116 +60,145 @@ class _AccountState extends State<Account> {
             fontFamily: 'space_grotesk'),
         title: Text('Transaction History'),
       ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/success.png',
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
-                              child: Text(
-                                'Paid: $label',
-                                style: TextStyle(
-                                  color: Color(0xff6B7280),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  fontFamily: 'space_grotesk',
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _handleRefresh,
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/success.png',
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                child: Text(
+                                  'Paid: ${transactionData[index]}',
+                                  style: TextStyle(
+                                    color: Color(0xff6B7280),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    fontFamily: 'space_grotesk',
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: Text(
+                                  'ID: $id',
+                                  style: TextStyle(
+                                    color: Color(0xff6B7280),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: 'space_grotesk',
+                                  ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              child: Text(
-                                'ID: $id',
-                                style: TextStyle(
-                                  color: Color(0xff6B7280),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  fontFamily: 'space_grotesk',
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                child: Text(
+                                  '$time',
+                                  style: TextStyle(
+                                    color: Color(0xff9CA3AF),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: 'space_grotesk',
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
-                              child: Text(
-                                '$time',
-                                style: TextStyle(
-                                  color: Color(0xff9CA3AF),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  fontFamily: 'space_grotesk',
-                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            child: Text(
+                              '+${amount}\$Pay',
+                              style: TextStyle(
+                                color: Color(0xff6B7280),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'space_grotesk',
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          child: Text(
-                            '+${amount}\$Pay',
-                            style: TextStyle(
-                              color: Color(0xff6B7280),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              fontFamily: 'space_grotesk',
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          child: Text(
-                            status ? 'Successful' : 'Failed',
-                            style: TextStyle(
-                              color: status
-                                  ? Color(0xff22C55E)
-                                  : Color(0xffEF4444),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              fontFamily: 'space_grotesk',
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            child: Text(
+                              status ? 'Successful' : 'Failed',
+                              style: TextStyle(
+                                color: status
+                                    ? Color(0xff22C55E)
+                                    : Color(0xffEF4444),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'space_grotesk',
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Divider(),
-            ],
-          );
-        },
+                Divider(),
+              ],
+            );
+          },
+        ),
       ),
     );
+  }
+
+  Future<void> _handleRefresh() async {
+    // Simulate a delay to mimic data fetching
+    await Future.delayed(Duration(seconds: 2));
+
+    // Load new data
+    loadData();
+  }
+
+  String generateRandomText() {
+    final List<String> randomTexts = [
+      'Gideon\'s Business',
+      'Miracles\'s Business',
+      'Brainy\'s Business',
+      'Rita\'s Business',
+      'Gideon\'s Business',
+      'Daniel\'s Business',
+      'Hilda\'s Business',
+      'Victory\'s Business',
+      'Alex\'s Business',
+      'Chrisdon\'s Business'
+    ];
+    final Random random = Random();
+    return randomTexts[random.nextInt(randomTexts.length)];
   }
 }
