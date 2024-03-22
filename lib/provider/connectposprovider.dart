@@ -27,6 +27,15 @@ class UserDataProvider with ChangeNotifier {
       notifyListeners();
       print(data);
     } else {
+      AlertDialog(
+        title: Text('Error'),
+        content: Column(
+          children: [
+            Text('Invalid user id!'),
+            Text('Do check your 100pay app to signin to get one'),
+          ],
+        ),
+      );
       print('the error is ${res.body}');
     }
   }

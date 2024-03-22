@@ -258,6 +258,7 @@ class _SignInState extends State<SignIn> {
         : 'assets/images/100Payblack.png';
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
         body: Padding(
