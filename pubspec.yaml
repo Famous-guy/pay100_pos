@@ -2,7 +2,7 @@ name: pay100_pos
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.5 <4.0.0'
+  sdk: ">=3.2.5 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,13 +31,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   webview_flutter: ^4.7.0
 
-  hundredpay: ^1.0.1
+  hundredpay: ^1.0.2
   intl: ^0.19.0
   shared_preferences: ^2.2.2
   flutter_svg: ^2.0.9
@@ -60,9 +59,8 @@ dev_dependencies:
 flutter_icons:
   image_path_ios: "assets/images/100payPOS.png"
   image_path_android: "assets/images/100payPOS.png"
-  android: true 
+  android: true
   ios: true
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -76,7 +74,6 @@ flutter_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -104,10 +101,10 @@ flutter:
         - asset: assets/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf
     #     - asset: fonts/static/SpaceGrotesk-Bold.ttf
     #     - asset: fonts/static/SpaceGrotesk-Light.ttf
-        # - asset: fonts/static/SpaceGrotesk-Medium.ttf
-        # - asset: fonts/static/SpaceGrotesk-Regular.ttf
-        # - asset: fonts/static/SpaceGrotesk-SemiBold.ttf
-          # style: italic
+    # - asset: fonts/static/SpaceGrotesk-Medium.ttf
+    # - asset: fonts/static/SpaceGrotesk-Regular.ttf
+    # - asset: fonts/static/SpaceGrotesk-SemiBold.ttf
+    # style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

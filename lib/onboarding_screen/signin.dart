@@ -443,7 +443,11 @@ class _SignInState extends State<SignIn> {
 
   Widget _buildApiKeyField() {
     return TextField(
-      keyboardType: TextInputType.phone,
+      maxLength: 6,
+      // minLines: 6,
+      // maxLines: 6,
+
+      keyboardType: TextInputType.number,
       controller: apiKeyController,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),

@@ -5,7 +5,7 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-// import 'package:hundredpay/hundredpay.dart';
+import 'package:hundredpay/hundredpay.dart';
 import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/currencies.dart';
 import 'package:pay100_pos/main.dart';
@@ -21,7 +21,7 @@ import 'package:pay100_pos/my_account.dart';
 import 'package:pay100_pos/onboarding_screen/signin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'src/hundred_pay.dart';
+// import 'src/hundred_pay.dart';
 
 class Pay100 extends StatefulWidget {
   // final String apikey;

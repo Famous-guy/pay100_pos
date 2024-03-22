@@ -133,7 +133,7 @@ class _Pay100TokenState extends State<Pay100Token> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.red,
         leading: IconButton(
           onPressed: () async {
             await _clearCacheAndCookies();
@@ -154,7 +154,7 @@ class _Pay100TokenState extends State<Pay100Token> {
           fontSize: 25,
           fontWeight: FontWeight.bold,
         ),
-        title: Text('app.100pay.co'),
+        title: Text('100Pay'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -164,7 +164,7 @@ class _Pay100TokenState extends State<Pay100Token> {
               children: [
                 LinearProgressIndicator(
                   value: progress,
-                  color: Colors.red,
+                  color: Colors.red.shade900,
                   backgroundColor: Colors.black12,
                 ),
                 Expanded(

@@ -252,10 +252,10 @@ packages:
     dependency: "direct main"
     description:
       name: hundredpay
-      sha256: "28bf3c047558319a78e09dee7ef87d45493629c8afea77437258fe3449632f26"
+      sha256: "7c14875442e90754ad69bb4e6171d1e5266edb589ccb57c0fc9f2c5a73261054"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   image:
     dependency: transitive
     description:

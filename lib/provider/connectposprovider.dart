@@ -211,43 +211,43 @@
 //                 ),
 //               ),
 //               // AlertDialog
-//               AlertDialog(
-//                 elevation: 0,
-//                 titleTextStyle: TextStyle(
-//                   color: Colors.black,
-//                   fontWeight: FontWeight.bold,
-//                   fontFamily: 'space_grotesk',
-//                   fontSize: 25,
-//                 ),
-//                 contentTextStyle: TextStyle(
-//                   color: Colors.black,
-//                   fontWeight: FontWeight.w400,
-//                   fontFamily: 'space_grotesk',
-//                   fontSize: 16,
-//                 ),
-//                 backgroundColor: Colors.white,
-//                 title: Text(
-//                   'Error',
-//                   textAlign: TextAlign.center,
-//                 ),
-//                 content: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: [
-//                     Text(
-//                       'Invalid user id! Do check your 100pay app, or sign in to get one',
-//                       textAlign: TextAlign.center,
-//                     ),
-//                   ],
-//                 ),
-//                 actions: <Widget>[
-//                   TextButton(
-//                     onPressed: () {
-//                       Navigator.of(context).pop();
-//                     },
-//                     child: Text('OK'),
-//                   ),
-//                 ],
-//               ),
+// AlertDialog(
+//   elevation: 0,
+//   titleTextStyle: TextStyle(
+//     color: Colors.black,
+//     fontWeight: FontWeight.bold,
+//     fontFamily: 'space_grotesk',
+//     fontSize: 25,
+//   ),
+//   contentTextStyle: TextStyle(
+//     color: Colors.black,
+//     fontWeight: FontWeight.w400,
+//     fontFamily: 'space_grotesk',
+//     fontSize: 16,
+//   ),
+//   backgroundColor: Colors.white,
+//   title: Text(
+//     'Error',
+//     textAlign: TextAlign.center,
+//   ),
+//   content: Column(
+//     mainAxisSize: MainAxisSize.min,
+//     children: [
+//       Text(
+//         'Invalid user id! Do check your 100pay app, or sign in to get one',
+//         textAlign: TextAlign.center,
+//       ),
+//     ],
+//   ),
+//   actions: <Widget>[
+//     TextButton(
+//       onPressed: () {
+//         Navigator.of(context).pop();
+//       },
+//       child: Text('OK'),
+//     ),
+//   ],
+// ),
 //             ],
 //           );
 //         },
@@ -307,15 +307,51 @@ class UserDataProvider with ChangeNotifier {
           context: context,
           barrierDismissible: false, // Prevents dismissing by tapping outside
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error'),
-              content: Text('An error occurred. Please try again later.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
+            return Stack(
+              children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
+                    color: Colors.black
+                        .withOpacity(0.5), // Adjust opacity as needed
+                  ),
+                ),
+                AlertDialog(
+                  elevation: 0,
+                  titleTextStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'space_grotesk',
+                    fontSize: 25,
+                  ),
+                  contentTextStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'space_grotesk',
+                    fontSize: 16,
+                  ),
+                  backgroundColor: Colors.white,
+                  title: Text(
+                    'Error',
+                    textAlign: TextAlign.center,
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Invalid user id! Do check your 100pay app, or sign in to get one',
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
                 ),
               ],
             );
@@ -338,10 +374,34 @@ class UserDataProvider with ChangeNotifier {
                 ),
               ),
               AlertDialog(
-                title: Text('Network Unstable'),
-                content:
-                    Text('Please check your network connection and try again.'),
-                actions: [
+                elevation: 0,
+                titleTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'space_grotesk',
+                  fontSize: 25,
+                ),
+                contentTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'space_grotesk',
+                  fontSize: 16,
+                ),
+                backgroundColor: Colors.white,
+                title: Text(
+                  'Network Unstable',
+                  textAlign: TextAlign.center,
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Please check your network connection and try again.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
