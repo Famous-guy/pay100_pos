@@ -391,35 +391,35 @@ class _Pay100State extends State<Pay100> {
                         width: 80,
                       ),
                     ),
-                    SizedBox(
-                      height: 40,
-                      width: 120,
-                      child: DefaultTextStyle.merge(
-                        style: TextStyle(
-                          color: _isDarkMode
-                              ? Colors.white
-                              : Colors
-                                  .black, // Change font color based on _isDarkMode
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isDarkMode = !_isDarkMode; // Toggle dark mode
-                            });
-                          },
-                          child: IconTheme.merge(
-                            data: IconThemeData(color: Colors.black),
-                            child: _isDarkMode
-                                ? Icon(Icons.brightness_5,
-                                    color: Colors.white, size: 30.0)
-                                : Icon(Icons.nightlight_round,
-                                    color: Colors.grey.shade600, size: 30.0),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 40,
+                    //   width: 120,
+                    //   child: DefaultTextStyle.merge(
+                    //     style: TextStyle(
+                    //       color: _isDarkMode
+                    //           ? Colors.white
+                    //           : Colors
+                    //               .black, // Change font color based on _isDarkMode
+                    //       fontSize: 18.0,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //     child: GestureDetector(
+                    //       onTap: () {
+                    //         setState(() {
+                    //           _isDarkMode = !_isDarkMode; // Toggle dark mode
+                    //         });
+                    //       },
+                    //       child: IconTheme.merge(
+                    //         data: IconThemeData(color: Colors.black),
+                    //         child: _isDarkMode
+                    //             ? Icon(Icons.brightness_5,
+                    //                 color: Colors.white, size: 30.0)
+                    //             : Icon(Icons.nightlight_round,
+                    //                 color: Colors.grey.shade600, size: 30.0),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
