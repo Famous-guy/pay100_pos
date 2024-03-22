@@ -6,10 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hundredpay/hundredpay.dart';
+import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/main.dart';
 import 'package:pay100_pos/myaccount.dart';
 import 'package:pay100_pos/onboarding_screen/settings.dart';
 import 'package:pay100_pos/provider/auth.dart';
+import 'package:pay100_pos/provider/connectposprovider.dart';
 import 'package:provider/provider.dart';
 // import 'package:pay100_pos/rough.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -196,7 +198,13 @@ class _Pay100State extends State<Pay100> {
   }
 
   Future<void> makePayment() async {
-    String? apiKey = await fetchApiKeyFromLocalStorage();
+    // String? apiKey = (await getUserDataFromPrefs()) as String?;
+    // var userData = Provider.of<UserDataProvider>(context);
+    UserData userData = await getUserDataFromPrefs(); // Retrieve user data
+    String? publicKey = userData.publicKey;
+    String? userid = userData.accountId;
+    String? currency = userData.currency;
+    String? email = userData.email;
 
     // Implement your logic to make payment with the entered amount
     if (paymentInput != null && paymentInput!.isNotEmpty) {
@@ -205,13 +213,13 @@ class _Pay100State extends State<Pay100> {
         customerEmail: paymentInput!,
         customerPhoneNumber: paymentInput!,
         customerName: 'widget.userName',
-        customerUserId: '293391',
+        customerUserId: userid,
         amount: displayedExpression.replaceAll(',', ''),
         userId: '6143bfb7fe85e0020bf243f9',
         refId: '012232',
         description: paymentInput!,
-        apiKey: '$apiKey',
-        currency: 'NGN',
+        apiKey: '$publicKey',
+        currency: currency,
         country: 'NG',
         chargeSource: '10',
         callBackUrl:
@@ -688,21 +696,24 @@ class _Pay100State extends State<Pay100> {
                                     // Code for 'Input' action
                                     print('Input Button Pressed');
                                   } else {
-                                    String? apiKey =
-                                        await fetchApiKeyFromLocalStorage();
+                                    UserData userData =
+                                        await getUserDataFromPrefs(); // Retrieve user data
+                                    String? publicKey = userData.publicKey;
+                                    String? userid = userData.accountId;
+                                    String? currency = userData.currency;
+                                    String? email = userData.email;
                                     var api = HundredPay.makePayment(
-                                      customerEmail:
-                                          'gideongabriel557@gmail.com',
+                                      customerEmail: email,
                                       customerPhoneNumber: '08121154848',
                                       customerName: 'Gideon Gabriel',
-                                      customerUserId: '293391',
+                                      customerUserId: userid,
                                       amount: displayedExpression.replaceAll(
                                           ',', ''),
                                       userId: '6143bfb7fe85e0020bf243f9',
                                       refId: '012232',
                                       description: 'express payment',
-                                      apiKey: '$apiKey',
-                                      currency: 'NGN',
+                                      apiKey: '$publicKey',
+                                      currency: currency,
                                       country: 'NG',
                                       chargeSource: 'api',
                                       callBackUrl:

@@ -1,7 +1,9 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/onboarding_screen/splash_screen.dart';
 import 'package:pay100_pos/provider/auth.dart';
+import 'package:pay100_pos/provider/connectposprovider.dart';
 import 'package:pay100_pos/test.dart';
 import 'package:flutter_launcher_icons/abs/icon_generator.dart';
 import 'package:flutter_launcher_icons/android.dart';
@@ -34,14 +36,41 @@ void main() async {
   // await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
   // Fetch API key from local storage
-  String? apiKey = await fetchApiKeyFromLocalStorage();
-  runApp(const Pay100Shop());
+  await getUserDataFromPrefs();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserDataProvider()),
+        // Add other providers if needed
+      ],
+      child: Pay100Shop(),
+    ),
+  );
 }
 
-Future<String?> fetchApiKeyFromLocalStorage() async {
+Future<UserData> getUserDataFromPrefs() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('apiKey');
+  String publicKey = prefs.getString('publicKey') ?? '';
+  String email = prefs.getString('email') ?? '';
+  String phone = prefs.getString('phone') ?? '';
+  String accountName = prefs.getString('accountName') ?? '';
+  String currency = prefs.getString('currency') ?? '';
+  String accountId = prefs.getString('accountId') ?? '';
+
+  return UserData(
+    publicKey: publicKey,
+    email: email,
+    phone: phone,
+    accountName: accountName,
+    currency: currency,
+    accountId: accountId,
+  );
 }
+
+// Future<String?> fetchApiKeyFromLocalStorage() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   return prefs.getString('apiKey');
+// }
 
 class Pay100Shop extends StatefulWidget {
   const Pay100Shop({super.key});
