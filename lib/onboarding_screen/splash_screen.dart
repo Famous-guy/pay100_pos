@@ -3,10 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/main.dart';
 import 'package:pay100_pos/onboarding_screen/signin.dart';
-import 'package:pay100_pos/onboarding_screen/splash_screen1.dart';
+
 import 'package:pay100_pos/test.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiKeyModel extends ChangeNotifier {
   bool _isInitialized = false;
