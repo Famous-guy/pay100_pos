@@ -1,4 +1,7 @@
 PODS:
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
   - Flutter (1.0.0)
   - flutter_inappwebview (0.0.1):
     - Flutter
@@ -12,6 +15,7 @@ PODS:
   - hundredpay (0.0.1):
     - Flutter
   - OrderedSet (5.0.0)
+  - Reachability (3.7.5)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -23,6 +27,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - Flutter (from `Flutter`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
@@ -35,8 +40,11 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - OrderedSet
+    - Reachability
 
 EXTERNAL SOURCES:
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
   Flutter:
     :path: Flutter
   flutter_inappwebview:
@@ -55,11 +63,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_inappwebview: 3d32228f1304635e7c028b0d4252937730bbc6cf
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   hundredpay: 3dfdc590776eb1c8e805feb97e6dc5b81b343b92
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
+  Reachability: 44d15955cdaee6cef699877e1f6647dd6f6698cc
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
   webview_cookie_manager: eaf920722b493bd0f7611b5484771ca53fed03f7
