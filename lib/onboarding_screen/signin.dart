@@ -261,6 +261,7 @@ class _SignInState extends State<SignIn> {
       debugShowCheckedModeBanner: false,
       theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
+        // backgroundColor: Colors.black,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -284,7 +285,8 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(
                           fontFamily: 'space_grotesk',
                           fontSize: 20,
-                          color: theme.colorScheme.onSurface,
+                          color: _isDarkMode ? Colors.white : Colors.black,
+                          // color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -294,7 +296,8 @@ class _SignInState extends State<SignIn> {
                         style: TextStyle(
                           fontFamily: 'space_grotesk',
                           fontSize: 14,
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          color: _isDarkMode ? Colors.white : Colors.black,
+                          // color: theme.colorScheme.onSurface.withOpacity(0.6),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -303,7 +306,6 @@ class _SignInState extends State<SignIn> {
                     ],
                   ),
                 ),
-
                 Align(
                   alignment: Alignment.bottomRight,
                   child: SizedBox(
@@ -383,58 +385,6 @@ class _SignInState extends State<SignIn> {
                           ),
                   ),
                 ),
-
-                // Align(
-                //   alignment: Alignment.bottomRight,
-                //   child: SizedBox(
-                //     height: 48,
-                //     width: 136,
-                //     child: _isLoading
-                //         ? ElevatedButton(
-                //             onPressed: () {},
-                //             style: ElevatedButton.styleFrom(
-                //               shape: RoundedRectangleBorder(
-                //                   borderRadius: BorderRadius.circular(15)),
-                //               backgroundColor: Color.fromRGBO(242, 8, 49, 0.7),
-                //             ),
-                //             child: CircularProgressIndicator(
-                //               valueColor:
-                //                   AlwaysStoppedAnimation<Color>(Colors.white),
-                //             ),
-                //           )
-                //         : ElevatedButton(
-                //             onPressed: () async {
-                //               // setState(() {
-                //               //   _isLoading = true;
-                //               //   // Your logic for handling API key entry and navigation
-                //               // });
-                //             },
-                //             style: ElevatedButton.styleFrom(
-                //               shape: RoundedRectangleBorder(
-                //                   borderRadius: BorderRadius.circular(15)),
-                //               backgroundColor: Color.fromRGBO(242, 8, 49, 0.7),
-                //             ),
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Text(
-                //                   'Continue',
-                //                   style: TextStyle(
-                //                     color: Colors.white,
-                //                     fontWeight: FontWeight.w600,
-                //                     fontSize: 14,
-                //                   ),
-                //                 ),
-                //                 Icon(
-                //                   Icons.arrow_forward_ios,
-                //                   size: 16,
-                //                   color: Colors.white,
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -461,7 +411,7 @@ class _SignInState extends State<SignIn> {
             Radius.circular(10),
           ),
         ),
-        hintText: 'eg: 293391',
+        hintText: 'eg: 123456',
         hintStyle: TextStyle(
           color: Color(0xffD1D5DB),
         ),
