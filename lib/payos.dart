@@ -33,6 +33,8 @@ class _Pay100State extends State<Pay100> {
   bool _isDarkMode = false;
   late String currencySymbol;
   String? paymentInput;
+  String? paymentNumber;
+  String? paymentDes;
   void initState() {
     super.initState();
     logSignInOrOut('Sign In');
@@ -114,7 +116,7 @@ class _Pay100State extends State<Pay100> {
                   TextField(
                     controller: number,
                     onChanged: (value) {
-                      paymentInput = value;
+                      paymentNumber = value;
                       setState(() {
                         _isNumberValid = _validateNumber(value);
                       });
@@ -131,7 +133,7 @@ class _Pay100State extends State<Pay100> {
                   TextField(
                     controller: description,
                     onChanged: (value) {
-                      paymentInput = value;
+                      paymentDes = value;
                       setState(() {
                         _isMetaDataValid = _validateMetaData(value);
                       });
@@ -199,17 +201,19 @@ class _Pay100State extends State<Pay100> {
     // String? email = userData.email;
 
     // Implement your logic to make payment with the entered amount
-    if (paymentInput != null && paymentInput!.isNotEmpty) {
+    if (paymentInput != null &&
+        paymentInput!.isNotEmpty &&
+        paymentNumber!.isNotEmpty) {
       // Adapt the logic as needed
       HundredPay.makePayment(
         customerEmail: paymentInput!,
-        customerPhoneNumber: paymentInput!,
+        customerPhoneNumber: paymentNumber!,
         customerName: 'widget.userName',
         customerUserId: userid,
         amount: displayedExpression.replaceAll(',', ''),
         userId: '6143bfb7fe85e0020bf243f9',
         refId: '012232',
-        description: paymentInput!,
+        description: paymentDes!,
         apiKey: '$publicKey',
         currency: currency,
         country: currency,
