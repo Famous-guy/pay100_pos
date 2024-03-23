@@ -1,27 +1,8 @@
-// import 'dart:ui';
-
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-import 'package:hundredpay/hundredpay.dart';
-import 'package:pay100_pos/api/connectpos.dart';
-import 'package:pay100_pos/currencies.dart';
-import 'package:pay100_pos/main.dart';
-import 'package:pay100_pos/myaccount.dart';
-// import 'package:pay100_pos/onboarding_screen/settings.dart';
-import 'package:pay100_pos/provider/auth.dart';
-// import 'package:pay100_pos/provider/connectposprovider.dart';
-import 'package:provider/provider.dart';
-// import 'package:pay100_pos/rough.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
-import 'package:pay100_pos/my_account.dart';
-import 'package:pay100_pos/onboarding_screen/signin.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-// import 'src/hundred_pay.dart';
+import 'package:intl/intl.dart';
+
+import 'package:pay100_pos/exports/export.dart';
 
 class Pay100 extends StatefulWidget {
   // final String apikey;
@@ -434,24 +415,6 @@ class _Pay100State extends State<Pay100> {
                   ),
 
                   ListTile(
-                    leading: ImageIcon(
-                      color: _isDarkMode ? Colors.white : Colors.black,
-                      AssetImage(
-                        'assets/images/Vector1.png',
-                      ),
-                    ),
-                    title: Text(
-                      'Notification',
-                      style: TextStyle(
-                        fontFamily: 'space_grotesk',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    textColor: _isDarkMode ? Colors.white : Colors.black,
-                  ),
-
-                  ListTile(
                     onTap: () {
                       Navigator.push(
                           context,
@@ -475,7 +438,22 @@ class _Pay100State extends State<Pay100> {
                       ),
                     ),
                     textColor: _isDarkMode ? Colors.white : Colors.black,
-                  )
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      color: _isDarkMode ? Colors.white : Colors.black,
+                      Icons.support,
+                    ),
+                    title: Text(
+                      'Support',
+                      style: TextStyle(
+                        fontFamily: 'space_grotesk',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    textColor: _isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ],
               ),
               Expanded(
@@ -572,7 +550,7 @@ class _Pay100State extends State<Pay100> {
                               // spacing: 45.0,
                               animationCurve: Curves.easeInOut,
                               animationDuration:
-                                  const Duration(milliseconds: 600),
+                                  const Duration(milliseconds: 200),
                               style: ToggleStyle(
                                 borderColor: Colors.transparent,
                                 indicatorColor: Colors.white,
@@ -706,7 +684,7 @@ class _Pay100State extends State<Pay100> {
                                 // Define the actions for 'Input' and 'Express' here
                               },
                               child: Text(
-                                positive ? 'Pay' : 'Express Pay',
+                                positive ? 'Recieve' : 'Instant Recieve',
                                 style: TextStyle(
                                     fontSize: 25, color: Colors.white),
                               ),
