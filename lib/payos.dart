@@ -610,7 +610,8 @@ class _Pay100State extends State<Pay100> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                displayedExpression.isEmpty
+                                displayedExpression.isEmpty ||
+                                        displayedExpression.startsWith('0')
                                     ? '$currencySymbol 0.00'
                                     : '$currencySymbol $displayedExpression',
                                 style: TextStyle(
