@@ -5,7 +5,7 @@ import 'package:pay100_pos/currencies.dart';
 import 'package:pay100_pos/onboarding_screen/splash_screen.dart';
 import 'package:pay100_pos/provider/auth.dart';
 import 'package:pay100_pos/provider/connectposprovider.dart';
-import 'package:pay100_pos/test.dart';
+import 'package:pay100_pos/payos.dart';
 import 'package:flutter_launcher_icons/abs/icon_generator.dart';
 import 'package:flutter_launcher_icons/android.dart';
 import 'package:flutter_launcher_icons/config/config.dart';

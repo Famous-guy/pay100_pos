@@ -4,7 +4,7 @@ import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/main.dart';
 import 'package:pay100_pos/onboarding_screen/signin.dart';
 
-import 'package:pay100_pos/test.dart';
+import 'package:pay100_pos/payos.dart';
 import 'package:provider/provider.dart';
 
 class ApiKeyModel extends ChangeNotifier {

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:pay100_pos/test.dart';
+import 'package:pay100_pos/payos.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
