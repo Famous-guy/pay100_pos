@@ -121,9 +121,8 @@ class _Pay100State extends State<Pay100> {
                     },
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      errorText: _isNumberValid
-                          ? null
-                          : 'Please enter a valid email address',
+                      errorText:
+                          _isNumberValid ? null : 'Please your phone number',
                       labelText: 'Phone number',
                       border: OutlineInputBorder(),
                     ),
@@ -139,9 +138,9 @@ class _Pay100State extends State<Pay100> {
                     },
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
-                      errorText: _isMetaDataValid
-                          ? null
-                          : 'Please enter a valid email address',
+                      // errorText: _isMetaDataValid
+                      //     ? null
+                      //     : 'Please you need to input a description of payment',
                       labelText: 'Description',
                       border: OutlineInputBorder(),
                     ),
@@ -162,8 +161,8 @@ class _Pay100State extends State<Pay100> {
                         setState(() {
                           _isEmailValid = _validateEmail(emailController.text);
                           _isNumberValid = _validateNumber(number.text);
-                          _isMetaDataValid =
-                              _validateMetaData(description.text);
+                          // _isMetaDataValid =
+                          //     _validateMetaData(description.text);
 
                           if (_isEmailValid &&
                               _isMetaDataValid &&
