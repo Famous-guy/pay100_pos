@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 // import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/main.dart';
 import 'package:pay100_pos/onboarding_screen/signin.dart';
@@ -33,62 +33,87 @@ class OnBoarding extends StatefulWidget {
 }
 
 class _OnBoardingState extends State<OnBoarding> {
-  late StreamSubscription subscription;
-  var isDeviceConnected = false;
-  bool isAlertSet = false;
-  getConnectivity() {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) async {
-      isDeviceConnected = await InternetConnectionChecker().hasConnection;
-      if (!isDeviceConnected && isAlertSet == false) {
-        showDialogBox();
-        setState(() => isAlertSet = true);
-      }
-    });
-  }
+  // late StreamSubscription subscription;
+  // var isDeviceConnected = false;
+  // bool isAlertSet = false;
+  // getConnectivity() {
+  //   subscription = Connectivity()
+  //       .onConnectivityChanged
+  //       .listen((ConnectivityResult result) async {
+  //     isDeviceConnected = await InternetConnectionChecker().hasConnection;
+  //     if (!isDeviceConnected && isAlertSet == false) {
+  //       showDialogBox();
+  //       setState(() => isAlertSet = true);
+  //     }
+  //   });
+  // }
 
-  @override
-  void initState() {
-    // getConnectivity();
-    super.initState();
-    getConnectivity();
-  }
+  // @override
+  // void initState() {
+  //   // getConnectivity();
+  //   super.initState();
+  //   getConnectivity();
+  // }
 
-  @override
-  void dispose() {
-    subscription.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   subscription.cancel();
+  //   super.dispose();
+  // }
 
-  // showDialogBox() {
-  //   if (Platform.isIOS) {
-  //     showCupertinoDialog<String>(
+  // // showDialogBox() {
+  // //   if (Platform.isIOS) {
+  // //     showCupertinoDialog<String>(
+  // //       context: context,
+  // //       builder: (BuildContext context) => CupertinoAlertDialog(
+  // //         title: const Text('No Connection'),
+  // //         content: const Text('Please check your internet connectivity'),
+  // //         actions: <Widget>[
+  // //           CupertinoDialogAction(
+  // //             onPressed: () async {
+  // //               Navigator.pop(context, 'Cancel');
+  // //               setState(() => isAlertSet = false);
+  // //               isDeviceConnected =
+  // //                   await InternetConnectionChecker().hasConnection;
+  // //               if (!isDeviceConnected && !isAlertSet) {
+  // //                 showDialogBox();
+  // //                 setState(() => isAlertSet = true);
+  // //               }
+  // //             },
+  // //             child: const Text('OK'),
+  // //           ),
+  // //         ],
+  // //       ),
+  // //     );
+  // //   } else {
+  // //     showDialog(
+  // //       context: context,
+  // //       builder: (BuildContext context) => AlertDialog(
+  // //         title: const Text('No Connection'),
+  // //         content: const Text('Please check your internet connectivity'),
+  // //         actions: <Widget>[
+  // //           TextButton(
+  // //             onPressed: () async {
+  // //               Navigator.pop(context, 'Cancel');
+  // //               setState(() => isAlertSet = false);
+  // //               isDeviceConnected =
+  // //                   await InternetConnectionChecker().hasConnection;
+  // //               if (!isDeviceConnected && !isAlertSet) {
+  // //                 showDialogBox();
+  // //                 setState(() => isAlertSet = true);
+  // //               }
+  // //             },
+  // //             child: const Text('OK'),
+  // //           ),
+  // //         ],
+  // //       ),
+  // //     );
+  // //   }
+  // // }
+
+  // showDialogBox() => showCupertinoDialog<String>(
   //       context: context,
   //       builder: (BuildContext context) => CupertinoAlertDialog(
-  //         title: const Text('No Connection'),
-  //         content: const Text('Please check your internet connectivity'),
-  //         actions: <Widget>[
-  //           CupertinoDialogAction(
-  //             onPressed: () async {
-  //               Navigator.pop(context, 'Cancel');
-  //               setState(() => isAlertSet = false);
-  //               isDeviceConnected =
-  //                   await InternetConnectionChecker().hasConnection;
-  //               if (!isDeviceConnected && !isAlertSet) {
-  //                 showDialogBox();
-  //                 setState(() => isAlertSet = true);
-  //               }
-  //             },
-  //             child: const Text('OK'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //   } else {
-  //     showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) => AlertDialog(
   //         title: const Text('No Connection'),
   //         content: const Text('Please check your internet connectivity'),
   //         actions: <Widget>[
@@ -98,7 +123,7 @@ class _OnBoardingState extends State<OnBoarding> {
   //               setState(() => isAlertSet = false);
   //               isDeviceConnected =
   //                   await InternetConnectionChecker().hasConnection;
-  //               if (!isDeviceConnected && !isAlertSet) {
+  //               if (!isDeviceConnected && isAlertSet == false) {
   //                 showDialogBox();
   //                 setState(() => isAlertSet = true);
   //               }
@@ -108,31 +133,6 @@ class _OnBoardingState extends State<OnBoarding> {
   //         ],
   //       ),
   //     );
-  //   }
-  // }
-
-  showDialogBox() => showCupertinoDialog<String>(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: const Text('No Connection'),
-          content: const Text('Please check your internet connectivity'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context, 'Cancel');
-                setState(() => isAlertSet = false);
-                isDeviceConnected =
-                    await InternetConnectionChecker().hasConnection;
-                if (!isDeviceConnected && isAlertSet == false) {
-                  showDialogBox();
-                  setState(() => isAlertSet = true);
-                }
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

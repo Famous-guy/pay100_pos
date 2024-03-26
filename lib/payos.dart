@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:intl/intl.dart';
 
 import 'package:pay100_pos/exports/export.dart';
+import 'package:pay100_pos/qrscan.dart';
 
 class Pay100 extends StatefulWidget {
   // final String apikey;
@@ -22,49 +23,49 @@ class Pay100 extends StatefulWidget {
 }
 
 class _Pay100State extends State<Pay100> {
-  late StreamSubscription subscription;
-  var isDeviceConnected = false;
-  bool isAlertSet = false;
-  getConnectivity() {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) async {
-      isDeviceConnected = await InternetConnectionChecker().hasConnection;
-      if (!isDeviceConnected && isAlertSet == false) {
-        showDialogBox();
-        setState(() => isAlertSet = true);
-      }
-    });
-  }
+  // late StreamSubscription subscription;
+  // var isDeviceConnected = false;
+  // bool isAlertSet = false;
+  // getConnectivity() {
+  //   subscription = Connectivity()
+  //       .onConnectivityChanged
+  //       .listen((ConnectivityResult result) async {
+  //     isDeviceConnected = await InternetConnectionChecker().hasConnection;
+  //     if (!isDeviceConnected && isAlertSet == false) {
+  //       showDialogBox();
+  //       setState(() => isAlertSet = true);
+  //     }
+  //   });
+  // }
 
-  @override
-  void dispose() {
-    subscription.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   subscription.cancel();
+  //   super.dispose();
+  // }
 
-  showDialogBox() => showCupertinoDialog<String>(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: const Text('No Connection'),
-          content: const Text('Please check your internet connectivity'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context, 'Cancel');
-                setState(() => isAlertSet = false);
-                isDeviceConnected =
-                    await InternetConnectionChecker().hasConnection;
-                if (!isDeviceConnected && isAlertSet == false) {
-                  showDialogBox();
-                  setState(() => isAlertSet = true);
-                }
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+  // showDialogBox() => showCupertinoDialog<String>(
+  //       context: context,
+  //       builder: (BuildContext context) => CupertinoAlertDialog(
+  //         title: const Text('No Connection'),
+  //         content: const Text('Please check your internet connectivity'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () async {
+  //               Navigator.pop(context, 'Cancel');
+  //               setState(() => isAlertSet = false);
+  //               isDeviceConnected =
+  //                   await InternetConnectionChecker().hasConnection;
+  //               if (!isDeviceConnected && isAlertSet == false) {
+  //                 showDialogBox();
+  //                 setState(() => isAlertSet = true);
+  //               }
+  //             },
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
   // showDialogBox() {
   //   if (Platform.isIOS) {
   //     showCupertinoDialog<String>(
@@ -157,7 +158,7 @@ class _Pay100State extends State<Pay100> {
   String? paymentDes;
   void initState() {
     super.initState();
-    getConnectivity();
+    // getConnectivity();
     logSignInOrOut('Sign In');
     _initializeData();
     _fetchCurrencyData();
@@ -571,6 +572,33 @@ class _Pay100State extends State<Pay100> {
                     ),
                     title: Text(
                       'Support',
+                      style: TextStyle(
+                        fontFamily: 'space_grotesk',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    textColor: _isDarkMode ? Colors.white : Colors.black,
+                  ),
+
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const QRViewExample(),
+                      ));
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => QRViewExample(),
+                      //   ),
+                      // );
+                    },
+                    leading: Icon(
+                      color: _isDarkMode ? Colors.white : Colors.black,
+                      Icons.qr_code_scanner,
+                    ),
+                    title: Text(
+                      'Scan Qr Code',
                       style: TextStyle(
                         fontFamily: 'space_grotesk',
                         fontSize: 16,

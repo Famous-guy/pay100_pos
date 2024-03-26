@@ -2,10 +2,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pay100_pos/api/connectpos.dart';
 import 'package:pay100_pos/connectivity.dart';
 import 'package:pay100_pos/currencies.dart';
@@ -262,92 +262,92 @@ class Pay100Shop extends StatefulWidget {
 }
 
 class _Pay100ShopState extends State<Pay100Shop> {
-  late StreamSubscription subscription;
-  var isDeviceConnected = false;
-  bool isAlertSet = false;
-  getConnectivity() {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) async {
-      isDeviceConnected = await InternetConnectionChecker().hasConnection;
-      if (!isDeviceConnected && isAlertSet == false) {
-        showDialogBox();
-        setState(() => isAlertSet = true);
-      }
-    });
-  }
+  // late StreamSubscription subscription;
+  // var isDeviceConnected = false;
+  // bool isAlertSet = false;
+  // getConnectivity() {
+  //   subscription = Connectivity()
+  //       .onConnectivityChanged
+  //       .listen((ConnectivityResult result) async {
+  //     isDeviceConnected = await InternetConnectionChecker().hasConnection;
+  //     if (!isDeviceConnected && isAlertSet == false) {
+  //       showDialogBox();
+  //       setState(() => isAlertSet = true);
+  //     }
+  //   });
+  // }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getConnectivity();
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getConnectivity();
+  // }
 
-  @override
-  void dispose() {
-    subscription.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   subscription.cancel();
+  //   super.dispose();
+  // }
 
-  showDialogBox() {
-    if (Platform.isIOS) {
-      showCupertinoDialog<String>(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: const Text('No Connection'),
-          content: const Text('Please check your internet connectivity'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              onPressed: () async {
-                Navigator.pop(context, 'Cancel');
-                setState(() => isAlertSet = false);
-                isDeviceConnected =
-                    await InternetConnectionChecker().hasConnection;
-                if (!isDeviceConnected && !isAlertSet) {
-                  showDialogBox();
-                  setState(() => isAlertSet = true);
-                }
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('No Connection'),
-          content: const Text('Please check your internet connectivity'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context, 'Cancel');
-                setState(() => isAlertSet = false);
-                isDeviceConnected =
-                    await InternetConnectionChecker().hasConnection;
-                if (!isDeviceConnected && !isAlertSet) {
-                  showDialogBox();
-                  setState(() => isAlertSet = true);
-                }
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
+  // showDialogBox() {
+  //   if (Platform.isIOS) {
+  //     showCupertinoDialog<String>(
+  //       context: context,
+  //       builder: (BuildContext context) => CupertinoAlertDialog(
+  //         title: const Text('No Connection'),
+  //         content: const Text('Please check your internet connectivity'),
+  //         actions: <Widget>[
+  //           CupertinoDialogAction(
+  //             onPressed: () async {
+  //               Navigator.pop(context, 'Cancel');
+  //               setState(() => isAlertSet = false);
+  //               isDeviceConnected =
+  //                   await InternetConnectionChecker().hasConnection;
+  //               if (!isDeviceConnected && !isAlertSet) {
+  //                 showDialogBox();
+  //                 setState(() => isAlertSet = true);
+  //               }
+  //             },
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   } else {
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) => AlertDialog(
+  //         title: const Text('No Connection'),
+  //         content: const Text('Please check your internet connectivity'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () async {
+  //               Navigator.pop(context, 'Cancel');
+  //               setState(() => isAlertSet = false);
+  //               isDeviceConnected =
+  //                   await InternetConnectionChecker().hasConnection;
+  //               if (!isDeviceConnected && !isAlertSet) {
+  //                 showDialogBox();
+  //                 setState(() => isAlertSet = true);
+  //               }
+  //             },
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
 
   final apiKeyController = TextEditingController();
   bool _isApiKeyValid = true;
   bool _isLoading = false;
-  final ConnectivityService connectivityService = ConnectivityService();
+  // final ConnectivityService connectivityService = ConnectivityService();
   // final ConnectivityService connectivityService = ConnectivityService();
   @override
   Widget build(BuildContext context) {
-    ConnectivityService().initConnectivity(context);
+    // ConnectivityService().initConnectivity(context);
     return ChangeNotifierProvider(
       create: (context) => AuthProvider(),
       child: const MaterialApp(
