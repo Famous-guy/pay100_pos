@@ -223,14 +223,14 @@
 // // // // //     });
 // // // // //   }
 
-// // // // //   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-// // // // //     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-// // // // //     if (!p) {
-// // // // //       ScaffoldMessenger.of(context).showSnackBar(
-// // // // //         const SnackBar(content: Text('no Permission')),
-// // // // //       );
-// // // // //     }
-// // // // //   }
+//   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+//     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+//     if (!p) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('no Permission')),
+//       );
+//     }
+//   }
 
 // // // // //   @override
 // // // // //   void dispose() {
@@ -1027,6 +1027,7 @@
 // //   }
 // // }
 
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -1175,10 +1176,11 @@ class _QRViewExampleState extends State<QRViewExample> {
                     });
                   },
                   child: CircleAvatar(
-                    backgroundColor: Colors.grey.shade800,
+                    backgroundColor:
+                        isFlashOn ? Colors.white : Colors.grey.shade800,
                     child: ImageIcon(
                       AssetImage('assets/images/lamp-charge.png'),
-                      color: isFlashOn ? Colors.yellow : Colors.grey.shade100,
+                      color: isFlashOn ? Colors.pink : Colors.grey.shade100,
                     ),
                   ),
                 ),
@@ -1197,6 +1199,15 @@ class _QRViewExampleState extends State<QRViewExample> {
     });
   }
 
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
@@ -1204,13 +1215,13 @@ class _QRViewExampleState extends State<QRViewExample> {
         result = scanData;
       });
       if (result != null) {
-        _handleScannedResult(result!.code); // Handle scanned result
+        _handleScannedResult(result!.code!); // Handle scanned result
       }
     });
   }
 
-  void _toggleFlash() {
-    controller.toggleFlash();
+  void _toggleFlash() async {
+    await controller.toggleFlash();
     setState(() {
       isFlashOn = !isFlashOn;
     });

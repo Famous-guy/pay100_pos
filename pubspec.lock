@@ -452,10 +452,10 @@ packages:
     dependency: "direct main"
     description:
       name: qr_code_scanner
-      sha256: "24250bf4874679b60abf7cb4b92cd62dbdc08a3081773bed234b4fbc31baa81c"
+      sha256: f23b68d893505a424f0bd2e324ebea71ed88465d572d26bb8d2e78a4749591fd
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.0"
+    version: "1.0.1"
   shared_preferences:
     dependency: "direct main"
     description:
