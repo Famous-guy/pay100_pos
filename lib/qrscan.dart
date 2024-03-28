@@ -1033,6 +1033,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart'; // Import fluttertoast library
 import 'package:pay100_pos/exports/export.dart';
+import 'package:pay100_pos/payos.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -1062,130 +1063,194 @@ class _QRViewExampleState extends State<QRViewExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: ImageIcon(
-            AssetImage('assets/images/nav.png'),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => _toggleCamera(),
-            icon: Icon(Icons.flip_camera_ios),
-          ),
-        ],
-        title: Row(
-          children: [
-            ImageIcon(
-              AssetImage('assets/images/scan.png'),
-            ),
-            ImageIcon(
-              AssetImage('assets/images/vert.png'),
-            ),
-            Text(
-              'Scan QR Code',
-              style: TextStyle(
-                fontFamily: 'space_grotesk',
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            )
-          ],
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   leading: GestureDetector(
+      //     onTap: () {
+      //       Navigator.pop(context);
+      //     },
+      //     child: ImageIcon(
+      //       AssetImage('assets/images/nav.png'),
+      //     ),
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () => _toggleCamera(),
+      //       icon: Icon(Icons.flip_camera_ios),
+      //     ),
+      //   ],
+      //   title: Row(
+      //     children: [
+      //       ImageIcon(
+      //         AssetImage('assets/images/scan.png'),
+      //       ),
+      //       ImageIcon(
+      //         AssetImage('assets/images/vert.png'),
+      //       ),
+      //       Text(
+      //         'Scan QR Code',
+      //         style: TextStyle(
+      //           fontFamily: 'space_grotesk',
+      //           fontSize: 18,
+      //           fontWeight: FontWeight.w700,
+      //         ),
+      //       )
+      //     ],
+      //   ),
+      // ),
       backgroundColor: Colors.transparent,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 52.5, vertical: 22),
-              child: Column(
-                children: [
-                  Text(
-                    'Scan Code to Pay',
-                    style: TextStyle(
-                      fontFamily: 'space_grotesk',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-                    child: Text(
-                      'Point the camera to the QR code or load a picture with the QR code from your gallery to continue.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'space_grotesk',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            QRView(
+              key: qrKey,
+              onQRViewCreated: _onQRViewCreated,
             ),
-            Expanded(
-              flex: 5,
-              child: Stack(
-                children: [
-                  QRView(
-                    key: qrKey,
-                    onQRViewCreated: _onQRViewCreated,
+            Column(
+              children: [
+                ListTile(
+                  leading: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const Pay100(),
+                      ));
+                      // Navigator.pop(context);
+                    },
+                    child: ImageIcon(
+                      color: Colors.white,
+                      AssetImage('assets/images/nav.png'),
+                    ),
                   ),
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color:
-                              result != null ? Colors.red : Colors.transparent,
-                          width: 4.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
+                  trailing: IconButton(
+                    onPressed: () => _toggleCamera(),
+                    icon: Icon(
+                      Icons.flip_camera_ios,
+                      color: Colors.white,
+                    ),
+                  ),
+                  title: Row(
+                    children: [
+                      ImageIcon(
+                        color: Colors.white,
+                        AssetImage('assets/images/scan.png'),
                       ),
-                      child: Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.width * 0.8,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 2),
-                              borderRadius: BorderRadius.circular(10.0),
+                      ImageIcon(
+                        color: Colors.white,
+                        AssetImage('assets/images/vert.png'),
+                      ),
+                      Text(
+                        'Scan QR Code',
+                        style: TextStyle(
+                          fontFamily: 'space_grotesk',
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 52.5, vertical: 22),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Scan Code to Pay',
+                        style: TextStyle(
+                          fontFamily: 'space_grotesk',
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 10,
+                        ),
+                        child: Text(
+                          'Point the camera to the QR code or load a picture with the QR code from your gallery to continue.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'space_grotesk',
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Stack(
+                    children: [
+                      // QRView(
+                      //   key: qrKey,
+                      //   onQRViewCreated: _onQRViewCreated,
+                      // ),
+                      Positioned.fill(
+                        child: Container(
+                          decoration: ShapeDecoration(
+                            shape: QrScannerOverlayShape(
+                                borderWidth: 4.0,
+                                borderRadius: 20,
+                                borderColor: result != null
+                                    ? Colors.red
+                                    : Colors.transparent),
+                          ),
+                          // BoxDecoration(
+                          //   border: Border.all(
+                          //     color: result != null ? Colors.red : Colors.red,
+                          //     width: 4.0,
+                          //   ),
+                          //   borderRadius: BorderRadius.circular(10.0),
+                          // ),
+                          child: Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: MediaQuery.of(context).size.width * 0.8,
+                              child: Container(
+                                decoration: ShapeDecoration(
+                                  shape: QrScannerOverlayShape(
+                                      borderRadius: 20,
+                                      borderColor: Colors.white),
+                                ),
+                                // BoxDecoration(
+                                //   border: Border.all(color: Colors.white, width: 2),
+                                //   borderRadius: BorderRadius.circular(10.0),
+                                // ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isFlashOn = !isFlashOn;
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundColor:
-                        isFlashOn ? Colors.white : Colors.grey.shade800,
-                    child: ImageIcon(
-                      AssetImage('assets/images/lamp-charge.png'),
-                      color: isFlashOn ? Colors.pink : Colors.grey.shade100,
-                    ),
+                    ],
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isFlashOn = !isFlashOn;
+                        });
+                      },
+                      child: CircleAvatar(
+                        backgroundColor:
+                            isFlashOn ? Colors.white : Colors.grey.shade800,
+                        child: ImageIcon(
+                          AssetImage('assets/images/lamp-charge.png'),
+                          color: isFlashOn ? Colors.pink : Colors.grey.shade100,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            )
+            ),
           ],
         ),
       ),
