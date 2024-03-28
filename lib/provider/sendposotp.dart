@@ -447,6 +447,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -480,13 +481,14 @@ class SendPos with ChangeNotifier {
           // Save account ID to shared preferences
           await saveAccountIdToPrefs(accountId);
 
+          navigateToOTPScreen(context, accountId);
           // Navigate to the next screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OTPScreen(),
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => OTPScreen(),
+          //   ),
+          // );
         } else {
           // Handle unexpected response
           throw Exception('Unexpected response: $responseData');
@@ -497,12 +499,79 @@ class SendPos with ChangeNotifier {
             'Failed to send OTP. Status code: ${response.statusCode}');
       }
     } on SocketException catch (_) {
-      // Handle socket exception
-      print('Network error: Please check your internet connection.');
-    } catch (e) {
-      // Handle other exceptions
-      print('Error: $e');
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevents dismissing by tapping outside
+        builder: (BuildContext context) {
+          return Stack(
+            children: [
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Container(
+                  color:
+                      Colors.black.withOpacity(0.5), // Adjust opacity as needed
+                ),
+              ),
+              AlertDialog(
+                elevation: 0,
+                titleTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'space_grotesk',
+                  fontSize: 25,
+                ),
+                contentTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'space_grotesk',
+                  fontSize: 16,
+                ),
+                backgroundColor: Colors.white,
+                title: Text(
+                  'Network Unstable',
+                  textAlign: TextAlign.center,
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Please check your network connection and try again.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      );
+      // return false; // Connection failed due to unstable network
     }
+
+    // on SocketException catch (_) {
+    //   // Handle socket exception
+    //   print('Network error: Please check your internet connection.');
+    // } catch (e) {
+    //   // Handle other exceptions
+    //   print('Error: $e');
+    // }
+  }
+
+  void navigateToOTPScreen(BuildContext context, String accountId) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OTPScreen(accountid: accountId),
+      ),
+    );
   }
 
   Future<void> saveAccountIdToPrefs(String accountId) async {

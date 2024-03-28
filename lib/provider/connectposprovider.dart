@@ -14,13 +14,19 @@ class UserDataProvider with ChangeNotifier {
 
   UserData? get userData => _userData;
 
-  Future<bool> connectPOS(BuildContext context, String inviteCode) async {
+  Future<bool> connectPOS(
+      {required BuildContext context,
+      required String inviteCode,
+      required String otp}) async {
     try {
       var url = Uri.parse('https://api.100pay.co/api/v1/user/connect-pos');
-      var body = {"accountId": inviteCode};
+      var body = {
+        "accountId": inviteCode,
+        "code": otp,
+      };
       var headers = {"Content-Type": "application/json"};
       var res = await http.post(url, body: jsonEncode(body), headers: headers);
-
+      print(res.body);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
         _userData = UserData.fromJson(data);
@@ -188,5 +194,7 @@ class UserDataProvider with ChangeNotifier {
     await prefs.setString('accountName', _userData!.accountName);
     await prefs.setString('currency', _userData!.currency);
     await prefs.setString('accountId', _userData!.accountId);
+    await prefs.setString('accountId', _userData!.businessId);
+    await prefs.setString('accountId', _userData!.token);
   }
 }

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pay100_pos/exports/export.dart';
+import 'package:pay100_pos/provider/getpayment.dart';
 import 'package:pay100_pos/qrscan.dart';
 
 class Pay100 extends StatefulWidget {
@@ -323,7 +324,7 @@ class _Pay100State extends State<Pay100> {
     String? currency = userData.currency;
     String? username = userData.accountName;
     // String? email = userData.email;
-
+    String? business = userData.businessId;
     // Implement your logic to make payment with the entered amount
     if (paymentInput != null &&
         paymentInput!.isNotEmpty &&
@@ -335,7 +336,7 @@ class _Pay100State extends State<Pay100> {
         customerName: username,
         customerUserId: userid,
         amount: displayedExpression.replaceAll(',', ''),
-        userId: '6143bfb7fe85e0020bf243f9',
+        userId: '$business',
         refId: '012232',
         description: paymentDes!,
         apiKey: '$publicKey',
@@ -343,7 +344,7 @@ class _Pay100State extends State<Pay100> {
         country: currency,
         chargeSource: '10',
         callBackUrl:
-            'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
+            'https://api.100pay.co/api/v1/pay/crypto/payment/$business',
         onError: (error) {},
         context: context,
       );
@@ -569,7 +570,19 @@ class _Pay100State extends State<Pay100> {
                     ),
 
                     ListTile(
-                      onTap: () {
+                      onTap: () async {
+                        UserData userData =
+                            await getUserDataFromPrefs(); // Retrieve user data
+                        String? token = userData.token;
+                        String? business = userData.businessId;
+                        await Provider.of<PaymentProvider>(
+                          context,
+                          listen: false,
+                        ).fetchPaymentData(
+                          auth_token: token,
+                          businessID: business,
+                        );
+
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
@@ -841,6 +854,8 @@ class _Pay100State extends State<Pay100> {
                                       String? email = userData.email;
                                       String? phonenumber = userData.phone;
                                       String? username = userData.accountName;
+                                      String? business = userData.businessId;
+
                                       var api = HundredPay.makePayment(
                                         customerEmail: email,
                                         customerPhoneNumber: '$phonenumber',
@@ -848,7 +863,7 @@ class _Pay100State extends State<Pay100> {
                                         customerUserId: userid,
                                         amount: displayedExpression.replaceAll(
                                             ',', ''),
-                                        userId: '6143bfb7fe85e0020bf243f9',
+                                        userId: business,
                                         refId: '012232',
                                         description: 'express payment',
                                         apiKey: '$publicKey',
@@ -856,7 +871,7 @@ class _Pay100State extends State<Pay100> {
                                         country: 'NG',
                                         chargeSource: 'api',
                                         callBackUrl:
-                                            'https://api.100pay.co/api/v1/pay/crypto/payment/6143bfb7fe85e0020bf243f9',
+                                            'https://api.100pay.co/api/v1/pay/crypto/payment/$business',
                                         onError: (error) {},
                                         context: context,
                                       );

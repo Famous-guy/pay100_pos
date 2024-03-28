@@ -227,7 +227,7 @@ class _SignInState extends State<SignIn> {
                                   await Provider.of<SendPos>(
                                     context,
                                     listen: false,
-                                  ).sendPos(context, apiKeyController.text);
+                                  ).sendPos(context, apiKeyController.text,);
 
                                   // Navigate to the next screen
                                   // Navigator.push(

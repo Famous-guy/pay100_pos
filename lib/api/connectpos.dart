@@ -5,6 +5,8 @@ class UserData {
   final String accountName;
   final String currency;
   final String accountId;
+  final String businessId;
+  final String token;
 
   UserData({
     required this.publicKey,
@@ -13,6 +15,8 @@ class UserData {
     required this.accountName,
     required this.currency,
     required this.accountId,
+    required this.businessId,
+    required this.token,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,8 @@ class UserData {
       accountName: json['account_name'],
       currency: json['currency'],
       accountId: json['accountId'],
+      businessId: json['businessId'],
+      token: json['token'],
     );
   }
 }

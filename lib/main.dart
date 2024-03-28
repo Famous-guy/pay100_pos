@@ -36,6 +36,7 @@ import 'package:flutter_launcher_icons/web/web_icon_generator.dart';
 import 'package:flutter_launcher_icons/web/web_template.dart';
 import 'package:flutter_launcher_icons/windows/windows_icon_generator.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:pay100_pos/provider/getpayment.dart';
 import 'package:pay100_pos/provider/sendposotp.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,9 +50,15 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserDataProvider()),
         ChangeNotifierProvider(
-            create: (_) => SendPos()), // Add SendPOS provider
+          create: (_) => UserDataProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SendPos(),
+        ), // Add SendPOS provider
+        ChangeNotifierProvider(
+          create: (_) => PaymentProvider(),
+        ),
         // Add other providers if needed
       ],
       child: Pay100Shop(),
@@ -86,6 +93,8 @@ Future<UserData> getUserDataFromPrefs() async {
   String accountName = prefs.getString('accountName') ?? '';
   String currency = prefs.getString('currency') ?? '';
   String accountId = prefs.getString('accountId') ?? '';
+  String businessId = prefs.getString('businessId').toString();
+  String token = prefs.getString('token').toString();
 
   return UserData(
     publicKey: publicKey,
@@ -94,6 +103,8 @@ Future<UserData> getUserDataFromPrefs() async {
     accountName: accountName,
     currency: currency,
     accountId: accountId,
+    businessId: businessId,
+    token: token,
   );
 }
 
