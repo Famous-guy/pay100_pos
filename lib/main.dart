@@ -93,8 +93,8 @@ Future<UserData> getUserDataFromPrefs() async {
   String accountName = prefs.getString('accountName') ?? '';
   String currency = prefs.getString('currency') ?? '';
   String accountId = prefs.getString('accountId') ?? '';
-  String businessId = prefs.getString('businessId').toString();
-  String token = prefs.getString('token').toString();
+  String businessId = prefs.getString('businessId') ?? ''; // Corrected line
+  String token = prefs.getString('token') ?? '';
 
   return UserData(
     publicKey: publicKey,

@@ -194,7 +194,7 @@ class UserDataProvider with ChangeNotifier {
     await prefs.setString('accountName', _userData!.accountName);
     await prefs.setString('currency', _userData!.currency);
     await prefs.setString('accountId', _userData!.accountId);
-    await prefs.setString('accountId', _userData!.businessId);
-    await prefs.setString('accountId', _userData!.token);
+    await prefs.setString('businessId', _userData!.businessId);
+    await prefs.setString('token', _userData!.token);
   }
 }
