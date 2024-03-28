@@ -11,11 +11,12 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 // import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pay100_pos/connectivity.dart';
 import 'package:pay100_pos/exports/export.dart';
+import 'package:pay100_pos/provider/sendposotp.dart';
 import 'package:pay100_pos/src/pay_ui.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../provider/connectposprovider.dart';
+// import '../provider/connectposprovider.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -165,7 +166,8 @@ class _SignInState extends State<SignIn> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Connect Your 100pay Account',
+                      'Request an OTP to connect',
+                      // 'Connect Your 100pay Account',
                       style: TextStyle(
                         fontFamily: 'space_grotesk',
                         fontSize: 20,
@@ -176,7 +178,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Enter your account ID',
+                      'Enter your account ID to request',
                       style: TextStyle(
                         fontFamily: 'space_grotesk',
                         fontSize: 14,
@@ -222,13 +224,10 @@ class _SignInState extends State<SignIn> {
                                   _isApiKeyValid =
                                       _validateApiKey(apiKeyController.text);
 
-                                  await Provider.of<UserDataProvider>(
+                                  await Provider.of<SendPos>(
                                     context,
                                     listen: false,
-                                  ).connectPOS(
-                                    context,
-                                    apiKeyController.text,
-                                  );
+                                  ).sendPos(context, apiKeyController.text);
 
                                   // Navigate to the next screen
                                   // Navigator.push(

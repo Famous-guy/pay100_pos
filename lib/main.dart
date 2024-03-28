@@ -36,6 +36,7 @@ import 'package:flutter_launcher_icons/web/web_icon_generator.dart';
 import 'package:flutter_launcher_icons/web/web_template.dart';
 import 'package:flutter_launcher_icons/windows/windows_icon_generator.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:pay100_pos/provider/sendposotp.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,10 +50,20 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserDataProvider()),
+        ChangeNotifierProvider(
+            create: (_) => SendPos()), // Add SendPOS provider
         // Add other providers if needed
       ],
       child: Pay100Shop(),
     ),
+
+    // MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider(create: (_) => UserDataProvider()),
+    //     // Add other providers if needed
+    //   ],
+    //   child: Pay100Shop(),
+    // ),
   );
 
   UserData userData = await getUserDataFromPrefs(); // Retrieve user data
